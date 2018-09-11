@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path,include
-from .views import loadSignup,reg,loadLogin,login,loadCriteria,criteria
+from .views import *
 
 app_name = "system"
 urlpatterns = [
@@ -10,6 +10,10 @@ urlpatterns = [
     path('find_students/',criteria.as_view(),name="FindStudents"),
     path('register_student/', loadSignup, name="Signup"),
     path('register/', reg.as_view(), name="register"),
+    path('profile/', profiles.as_view(), name="profile"),
+    path('ForgotPassword/', forgotPassword.as_view(), name="forgotpassword"),
+
+
 
 
 ]

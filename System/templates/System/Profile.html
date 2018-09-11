@@ -1,0 +1,81 @@
+{% load staticfiles %}
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.css">
+
+
+    <link rel="stylesheet" href=" {% static "System/css/Login-Form-Clean-1.css" %} " >
+    <link rel="stylesheet" href=" {% static "System/css/styles.css" %} " >
+    <link rel="stylesheet" href="{% static "System/css/Login-Form-Clean-1.css" %}">
+
+</head>
+
+<body style="height:660px;">
+    <div class="container">
+        <div>
+            <div class="container">
+                <nav class="navbar navbar-light navbar-expand-md fixed-top" id="mnav">
+                    <div class="container-fluid"><a class="navbar-brand" href="#" style="color:rgba(255,255,255,0.9);">Brand</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                        <div
+                            class="collapse navbar-collapse float-right justify-content-end" id="navcol-1" style="color:rgb(255,255,255);">
+                            <ul class="nav navbar-nav">
+                                <li class="nav-item" role="presentation" style="padding-right:15px;"><a class="nav-link" style="color:rgba(255,255,255,0.5);margin-right:15px;">Logout</a></li>
+
+                            </ul>
+                    </div>
+            </div>
+            </nav>
+        </div>
+    </div>
+    </div>
+    <div id="block" class="login-clean" style="padding-top:177px;max-height:300px;margin-top: 40px">
+        <div class="container">
+            <form data-aos="fade" method="post" action="{%  url 'system:profile' %}" data-aos-duration="700" id="mainform" style="max-width:364px;margin-top:-88px;height:750px;">
+                {% csrf_token %}
+                <div class="form-group"><input class="form-control" type="hidden" id="email" name="email" placeholder="PG Marks Agg." autocomplete = "off" value="{{ context }}"></div>
+                <h2 class="sr-only">Sign Up Form</h2>
+                <div class="illustration"><i class="typcn typcn-user" data-aos="fade" data-aos-duration="900" style="color:#e91e63;"></i></div>
+                <br>
+                <div class="form-group"><input class="form-control" type="text" id="address" name="address" required="" placeholder="Main address area only" autofocus="" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="state" name="state" required="" placeholder="State" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="city" name="city" required="" placeholder="City" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pin" maxlength="6" name="pin" required="" placeholder="Pin" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="ssc" name="ssc" required="" placeholder="SSC Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="hsc" name="hsc" required="" placeholder="HSC Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="ug" name="ug" required="" placeholder="UG Marks Agg." autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg" name="pg" placeholder="PG Marks Agg." autocomplete = "off"></div>
+
+
+                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Save Profile</button></div>
+
+            </form>
+        </div>
+    </div>
+    <script src=" {% static "System/js/jquery.min.js" %}"></script>
+    <script src=" {% static "System/js/bootstrap.min.js" %}"></script>
+    <script src=" {% static "System/js/bs-animation.js" %} "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
+
+
+
+</body>
+
+</html>

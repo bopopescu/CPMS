@@ -56,7 +56,7 @@
                 <div class="illustration"><i class="typcn typcn-cloud-storage-outline" data-aos="fade" data-aos-duration="1200" style="color:#e91e63; margin-bottom: 10px"></i></div>
                 <div class="form-group"><input class="form-control" type="email" name="email" id="email" placeholder="Email" required autocomplete = "off"></div>
                 <div class="form-group"><input class="form-control" type="password" id="password" name="password" placeholder="Password" required ></div>
-                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id="login" style="background-color:rgb(233,30,99);" di>Log In</button></div><a href="forgot.jsp" class="forgot" style="color:rgb(255,255,255);">Forgot your email or password?</a></form>
+                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id="login" style="background-color:rgb(233,30,99);" di>Log In</button></div><a href="{% url 'system:forgotpassword' %}" class="forgot" style="color:rgb(255,255,255);">Forgot your email or password?</a></form>
         </div>
     </div>
       <script src=" {% static "System/js/jquery.min.js" %}"></script>
@@ -65,11 +65,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
 
 
-<script type="text/javascript">
-    {% if flag == 1 %}
-   alert("Incorrect credentials. Try again ! If you don't remember your password, click on Forgot Password to recover.");
-    {% endif %}
-</script>
 
 
 

@@ -1,12 +1,18 @@
 
 import mysql.connector
 import csv
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
+import string
+import random
+
 
 from django.shortcuts import render,HttpResponseRedirect
 from rest_framework.views import APIView
 from .models import register,profile
 from django.http import HttpResponse
-from .serializer import signupSer
+from .serializer import signupSer,profileSer
 
 # Create your views here.
 
@@ -21,6 +27,7 @@ def loadLogin(request):
 
 def loadCriteria(request):
     return render(request, "System/Criteria.html")
+
 
 class reg(APIView):
     def post(self,request):
@@ -42,12 +49,14 @@ class reg(APIView):
         return HttpResponse('Saved')
 
 class login(APIView):
+
     def post(self,request):
         email = request.POST['email']
         password = request.POST['password']
+        request.session['email'] = email
         try:
             register.objects.get(email=email,password=password)
-            return HttpResponse("Logged in successfully")
+            return HttpResponseRedirect("/system/profile/")
         except:
 
             return HttpResponseRedirect("/system/")
@@ -187,4 +196,74 @@ def checkit(str) :
     if str == "pg":
         return 'postg'
 
+
+class profiles(APIView):
+    def get(self,request):
+        email = request.session.get('email')
+        try:
+            pro = profile.objects.get(email=email)
+            return render(request, "System/Criteria.html")
+        except:
+
+            return render(request, "System/Profile.html",{"context":email})
+
+
+    def post(self,request):
+        email = request.session.get('email')
+        ser = profileSer(data=request.data)
+        if ser.is_valid():
+            ser.save()
+            return HttpResponse("Saved")
+        else:
+            return HttpResponse("Error")
+
+
+class forgotPassword(APIView):
+    def get(self,request):
+        return render(request,"System/Forgot.html")
+
+    def post(self, request):
+
+        email = request.POST['email']
+        try:
+            object = register.objects.get(email=email)
+             # create message object instance
+            msg = MIMEMultipart()
+            pwd = randompassword()
+            message = "Your new password is : " + pwd
+            register.objects.filter(email=email).update(password=pwd)
+
+                # setup the parameters of the message
+            password = "fcpark22"
+            msg['From'] = "ankushgochke@gmail.com"
+            msg['To'] = email
+            msg['Subject'] = "MCOE MCA Placement system password change !"
+
+                # add in the message body
+            msg.attach(MIMEText(message, 'plain'))
+
+                # create server
+            server = smtplib.SMTP('smtp.gmail.com: 587')
+
+            server.starttls()
+
+                # Login Credentials for sending the mail
+            server.login(msg['From'], password)
+
+                # send the message via the server.
+            server.sendmail(msg['From'], msg['To'], msg.as_string())
+
+            server.quit()
+
+            return HttpResponse('')
+
+        except:
+            pass
+
+
+
+def randompassword():
+    chars=string.ascii_uppercase + string.ascii_lowercase + string.digits
+    size= 8
+    return ''.join(random.choice(chars) for x in range(size,16))
 
