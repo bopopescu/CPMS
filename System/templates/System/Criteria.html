@@ -1,0 +1,175 @@
+{% load staticfiles %}
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.css">
+
+
+    <link rel="stylesheet" href=" {% static "System/css/Login-Form-Clean-1.css" %} " >
+    <link rel="stylesheet" href=" {% static "System/css/styles.css" %} " >
+    <link rel="stylesheet" href="{% static "System/css/Login-Form-Clean-1.css" %}">
+
+</head>
+
+<body>
+	<form action="{% url 'system:FindStudents' %}" method="post">
+        {% csrf_token %}
+		<div id="divs">
+			<div class="container" style="margin-top: 228px;">
+
+
+                        <select id = "Year" name="Year" class="text-center" style="width: 20%; height: 5%; margin-left: 40%">
+
+                            <option value="FY"> FY </option>
+                            <option value="SY"> SY </option>
+                            <option value="TY"> TY </option>
+
+
+                        </select>
+                        <br><br><br>
+
+				<div class="row" id="row1">
+
+					<div class="col-3" id="col1">
+
+
+						<div onclick="doten('check1','tenth')">
+							<input type="checkbox" name="check" id="check1" value="ssc"
+								style="width: 30px; height: 22px; margin-top: 40px;">
+						</div>
+
+
+						<select id="tenth" name="tenth" disabled=""
+							style="margin-top: 15px;">
+							<option value="50" selected="">Above 50%</option>
+							<option value="55">Above 55%</option>
+							<option value="60">Above 60%</option>
+							<option value="65">Above 65%</option>
+							<option value="75">Above 70%</option>
+						</select>
+
+						<div onclick="doten('check1','tenth')">
+							<img src="{% static "System/images/ssc.png" %}" id="10th"
+								style="width: 200px; height: 156px;">
+						</div>
+					</div>
+					<div class="col-3" id="col2" style="margin-top: 0px;">
+						<div onclick="doten('check2','twelth')">
+							<input type="checkbox" name="check" id="check2" value="hsc"
+								style="width: 30px; height: 22px; margin-top: 40px;">
+						</div>
+						<div>
+							<select id="twelth" name="twelth" disabled=""
+								style="margin-top: 15px;"><option value="50"
+									selected="">Above 50%</option>
+								<option value="55">Above 55%</option>
+								<option value="60">Above 60%</option>
+								<option value="65">Above 65%</option>
+								<option value="75">Above 70%</option></select>
+						</div>
+						<div onclick="doten('check2','twelth')">
+							<img src=" {% static "System/images/hsc.png" %}" style="width: 200px; height: 156px;">
+						</div>
+					</div>
+					<div class="col-3" id="col3">
+						<div onclick="doten('check3','underg')">
+							<input type="checkbox" name="check" id="check3" value="ug"
+								style="width: 30px; height: 22px; margin-top: 40px;">
+						</div>
+						<div>
+							<select id="underg" name="underg" disabled=""
+								style="margin-top: 15px;"><option value="50"
+									selected="">Above 50%</option>
+								<option value="55">Above 55%</option>
+								<option value="60">Above 60%</option>
+								<option value="65">Above 65%</option>
+								<option value="75">Above 70%</option></select>
+						</div>
+						<div onclick="doten('check3','underg')">
+							<img src="{% static "System/images/ug.png" %}" style="width: 200px; height: 165px;">
+						</div>
+
+					</div>
+					<div class="col-3" id="col4">
+						<div onclick="doten('check4','postg')">
+							<input type="checkbox" name="check" id="check4" value="pg"
+								style="width: 30px; height: 22px; margin-top: 40px;">
+						</div>
+						<div>
+							<select id="postg" name="postg" disabled=""
+								style="margin-top: 15px;"><option value="50"
+									selected="">Above 50%</option>
+								<option value="55">Above 55%</option>
+								<option value="60">Above 60%</option>
+								<option value="65">Above 65%</option>
+								<option value="75">Above 70%</option></select>
+						</div>
+						<div onclick="doten('check4','postg')">
+							<img src="{% static "System/images/pg.png" %}" style="width: 200px; height: 156px;">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="container" id="contbtn">
+				<button class="btn btn-primary btn-lg" type="submit" id="btn"
+					onclick="acceptfnm()"
+					style="background-color: rgb(233, 30, 99); width: 124px; margin-top: 61px;">Generate</button>
+			</div>
+
+			<input type="hidden" name="hide" id="hide">
+
+
+		</div>
+	    <script src=" {% static "System/js/jquery.min.js" %}"></script>
+    <script src=" {% static "System/js/bootstrap.min.js" %}"></script>
+    <script src=" {% static "System/js/bs-animation.js" %} "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
+	</form>
+
+	<script type="text/javascript">
+		function acceptfnm() {
+			var filenm = prompt('Enter File name : ');
+			document.getElementById('hide').value = filenm;
+
+		}
+
+		function doten(c1, c2) {
+
+			if (document.getElementById(c1).checked) {
+				document.getElementById(c1).checked = false;
+				document.getElementById(c2)
+						.setAttribute('disabled', 'disabled');
+
+			} else {
+				document.getElementById(c1).checked = true;
+
+				document.getElementById(c2).removeAttribute('disabled');
+
+			}
+
+		}
+	</script>
+
+</body>
+
+</html>
