@@ -88,31 +88,39 @@
 
           document.getElementById('mainform').style.display = "none";
           document.getElementById('loading').style.display = "block";
+             if(document.getElementById('email').value != "") {
 
 
-                  $.ajax({
-                      url: 'http://127.0.0.1:8000/system/ForgotPassword/',
-                      method: 'POST',
-                      data: {
-                          email: $('#email').val(),
-                          csrfmiddlewaretoken: $('Input[name=csrfmiddlewaretoken]').val(),
+                 $.ajax({
+                     url: 'http://127.0.0.1:8000/system/ForgotPassword/',
+                     method: 'POST',
+                     data: {
+                         email: $('#email').val(),
+                         csrfmiddlewaretoken: $('Input[name=csrfmiddlewaretoken]').val(),
 
-                      },
-                      success: function () {
-                          alert("Successfully changed password ! Check your email for new password.");
-                           document.getElementById('mainform').style.display = "block";
-                           document.getElementById('loading').style.display = "none";
-                          $('#mainform')[0].reset();
-                      },
-                      error: function () {
-                          alert("Check email address");
-                           document.getElementById('mainform').style.display = "block";
-                           document.getElementById('loading').style.display = "none";
-                      }
+                     },
+                     success: function () {
 
-                  })
+                         document.getElementById('mainform').style.display = "block";
+                         document.getElementById('loading').style.display = "none";
+                         $('#mainform')[0].reset();
+                         alert("Successfully changed password ! Check your email for new password.");
+                     },
+                     error: function () {
 
+                         document.getElementById('mainform').style.display = "block";
+                         document.getElementById('loading').style.display = "none";
+                         alert("No user found !");
+                     }
 
+                 })
+
+             }
+             else {
+                 document.getElementById('mainform').style.display = "block";
+                 document.getElementById('loading').style.display = "none";
+                 alert("Please enter email address first !");
+             }
       });
 
 </script>

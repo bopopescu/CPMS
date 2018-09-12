@@ -1,20 +1,16 @@
-
 import mysql.connector
 import csv
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 import smtplib
 import string
 import random
 
-
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from django.shortcuts import render,HttpResponseRedirect
 from rest_framework.views import APIView
 from .models import register,profile
 from django.http import HttpResponse
-from .serializer import signupSer,profileSer
-
-# Create your views here.
+from .serializer import profileSer
 
 
 def loadSignup(request):
@@ -219,6 +215,8 @@ class profiles(APIView):
 
 
 class forgotPassword(APIView):
+
+
     def get(self,request):
         return render(request,"System/Forgot.html")
 
@@ -226,35 +224,21 @@ class forgotPassword(APIView):
 
         email = request.POST['email']
         try:
-            object = register.objects.get(email=email)
-             # create message object instance
+            register.objects.get(email=email)
             msg = MIMEMultipart()
             pwd = randompassword()
             message = "Your new password is : " + pwd
             register.objects.filter(email=email).update(password=pwd)
-
-                # setup the parameters of the message
             password = "fcpark22"
             msg['From'] = "ankushgochke@gmail.com"
             msg['To'] = email
             msg['Subject'] = "MCOE MCA Placement system password change !"
-
-                # add in the message body
             msg.attach(MIMEText(message, 'plain'))
-
-                # create server
             server = smtplib.SMTP('smtp.gmail.com: 587')
-
             server.starttls()
-
-                # Login Credentials for sending the mail
             server.login(msg['From'], password)
-
-                # send the message via the server.
             server.sendmail(msg['From'], msg['To'], msg.as_string())
-
             server.quit()
-
             return HttpResponse('')
 
         except:
@@ -265,5 +249,6 @@ class forgotPassword(APIView):
 def randompassword():
     chars=string.ascii_uppercase + string.ascii_lowercase + string.digits
     size= 8
-    return ''.join(random.choice(chars) for x in range(size,16))
+    return ''.join(random.choice(chars) for x in range(size, 16))
+
 
