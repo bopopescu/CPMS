@@ -12,6 +12,8 @@ urlpatterns = [
     path('register/', reg.as_view(), name="register"),
     path('profile/', profiles.as_view(), name="profile"),
     path('ForgotPassword/', forgotPassword.as_view(), name="forgotpassword"),
+    path('custom_email/', customEmail.as_view(), name="customemail"),
+    path('logout/', logout, name="logout"),
 
 
 

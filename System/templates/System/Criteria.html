@@ -29,7 +29,27 @@
 
 </head>
 
+{% if user.is_superuser %}
 <body>
+
+<div class="container">
+        <div>
+            <div class="container">
+                <nav class="navbar navbar-light navbar-expand-md fixed-top" id="mnav">
+                    <div class="container-fluid"><a class="navbar-brand" href="#" style="color:rgba(255,255,255,0.9);">Brand</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                        <div
+                            class="collapse navbar-collapse float-right justify-content-end" id="navcol-1" style="color:rgb(255,255,255);">
+                            <ul class="nav navbar-nav">
+                                <li class="nav-item" role="presentation" style="padding-right:15px;"><a class="nav-link" style="color:rgba(255,255,255,0.5);margin-right:15px;" href="{% url 'system:logout' %}">Logout</a></li>
+
+                            </ul>
+                    </div>
+            </div>
+            </nav>
+        </div>
+    </div>
+    </div>
+
 	<form action="{% url 'system:FindStudents' %}" method="post">
         {% csrf_token %}
 		<div id="divs">
@@ -170,6 +190,25 @@
 		}
 	</script>
 
-</body>
+{%  else  %}
+    <body onload="clickerror()">
+     <button id = "error" onclick="f()" hidden> </button>
+    <form action="{% url 'system:Index' %}" onload="f()" method="post">
+    {% csrf_token %}
+    <input type="submit" id="save" hidden>
+    </form>
 
+    <script>
+        function clickerror() {
+            $('#error').click();
+            $('#save').click();
+        }
+
+        function f() {
+            alert("Please login first !");
+        }
+    </script>
+</body>
+{% endif %}
+</body>
 </html>

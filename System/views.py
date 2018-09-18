@@ -1,16 +1,27 @@
 import mysql.connector
 import csv
-import smtplib
+
 import string
 import random
 
+import smtplib
+
+from email.mime.base import MIMEBase
+from email import encoders
+
 from email.mime.multipart import MIMEMultipart
+from django.contrib.auth.models import User
 from email.mime.text import MIMEText
 from django.shortcuts import render,HttpResponseRedirect
 from rest_framework.views import APIView
 from .models import register,profile
 from django.http import HttpResponse
 from .serializer import profileSer
+from django.contrib import messages
+from django.contrib import auth
+from django.core.exceptions import ObjectDoesNotExist
+
+
 
 
 def loadSignup(request):
@@ -31,15 +42,14 @@ class reg(APIView):
         fnm = request.POST['fnm']
         mnm = request.POST['mnm']
         lnm = request.POST['lnm']
-        year = request.POST['year']
         password = request.POST['password']
 
-        reg = register()
+        reg = User()
+        reg.username = email
         reg.email = email
         reg.first_name = fnm
         reg.middle_name = mnm
         reg.last_name = lnm
-        reg.year = year
         reg.password = password
         reg.save()
         return HttpResponse('Saved')
@@ -51,12 +61,25 @@ class login(APIView):
         password = request.POST['password']
         request.session['email'] = email
         try:
-            register.objects.get(email=email,password=password)
-            return HttpResponseRedirect("/system/profile/")
-        except:
+            user = auth.authenticate(username=email,password=password )
+            if user is not None:
+                auth.login(request,user)
+                if request.user.is_superuser:
+                    return HttpResponseRedirect("/system/criteria")
+                else:
+                    return HttpResponseRedirect("/system/profile/")
+            else:
+                messages.error(request, 'Username and Password did not matched !')
 
-            return HttpResponseRedirect("/system/")
+        except auth.ObjectDoesNotExist:
+            print("Invalid user")
 
+        return HttpResponseRedirect("/system/")
+
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect("/system/")
 
 class criteria(APIView):
 
@@ -194,6 +217,7 @@ def checkit(str) :
 
 
 class profiles(APIView):
+
     def get(self,request):
         email = request.session.get('email')
         try:
@@ -205,6 +229,7 @@ class profiles(APIView):
 
 
     def post(self,request):
+
         email = request.session.get('email')
         ser = profileSer(data=request.data)
         if ser.is_valid():
@@ -245,10 +270,47 @@ class forgotPassword(APIView):
             pass
 
 
-
 def randompassword():
     chars=string.ascii_uppercase + string.ascii_lowercase + string.digits
     size= 8
     return ''.join(random.choice(chars) for x in range(size, 16))
+
+
+class customEmail(APIView):
+    def get(self,request):
+        return render(request,"System/Custom_email.html")
+
+    def post(self,request):
+        a = request.FILES.getlist('file')
+        fromaddr = "ankushgochke@gmail.com"
+        toaddr = "ankushgochke@gmail.com"
+        frompass = "fcpark22"
+        msg = MIMEMultipart()
+
+        msg['From'] = "ankushgochke@gmail.com"
+        msg['To'] = "ankushgochke@gmail.com"
+        msg['Subject'] = request.POST['subject']
+
+        body =request.POST['email']
+
+        msg.attach(MIMEText(body, 'plain'))
+
+        for i in a:
+            part = MIMEBase('application', 'octet-stream')
+
+            part.set_payload(i.read())
+            encoders.encode_base64(part)
+            part.add_header('Content-Disposition', "attachment; filename= %s" % i)
+
+            msg.attach(part)
+
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(fromaddr, frompass)
+        text = msg.as_string()
+        server.sendmail(fromaddr, toaddr, text)
+        server.quit()
+
+
 
 
