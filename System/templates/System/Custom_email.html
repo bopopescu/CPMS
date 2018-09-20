@@ -50,6 +50,7 @@
 
 
 	<form  method="post"  style="margin-top: -5%" action="{%  url 'system:customemail' %}" enctype="multipart/form-data">
+        {% csrf_token %}
 			<div class="container" id = "mcontainer"  style="margin-top: 228px;">
 				<div class="row">
 					<div class="col-sm-4" id="col"></div>
@@ -88,10 +89,15 @@
 {%  else  %}
     <body onload="clickerror()">
      <button id = "error" onclick="f()" hidden> </button>
+     <form method="post" action="{% url 'system:Index'%}">
+         {% csrf_token %}
+         <button type="submit" id = "save" hidden></button>
+     </form>
 
     <script>
         function clickerror() {
-            $('#error').click();
+            document.getElementById('error').click();
+            document.getElementById('save').click();
 
         }
 
