@@ -19,7 +19,8 @@ from django.http import HttpResponse
 from .serializer import profileSer
 from django.contrib import messages
 from django.contrib import auth
-
+from django.http import JsonResponse
+from rest_framework.response import Response
 
 
 
@@ -306,5 +307,12 @@ class customEmail(APIView):
         server.quit()
 
 
+class generateProfile(APIView):
+    def get(self,request):
+        email = request.user.email
+
+        obj = profile.objects.get(email_id=email)
+        context = profileSer(obj)
+        return render(request,"System/reqprofile.html",{'context':context.data})
 
 
