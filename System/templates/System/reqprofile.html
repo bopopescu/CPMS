@@ -9,7 +9,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 
 <!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.js"
+			  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+			  crossorigin="anonymous"></script>
 
 
 <!-- Latest compiled JavaScript -->
@@ -61,15 +64,15 @@
                 <h2 class="sr-only">Sign Up Form</h2>
                 <div class="illustration"><i class="typcn typcn-user" data-aos="fade" data-aos-duration="900" style="color:#e91e63;"></i></div>
                 <br>
-                <div class="form-group"> <select class="form-control" name = "year" id = "year" onclick="years()"> <option>{{ context.year }}</option> <option value="FY"> FY </option> <option value="SY"> SY </option> <option value="TY"> TY </option>  </select></div>
-                <div class="form-group"> <select class="form-control" name = "shift" id = "shift" onclick="shifts()"> <option>{{ context.shift }}</option> <option value="Shift I"> Shift I </option> <option value="Shift II"> Shift II </option></select></div>
-                <div class="form-group"><input class="form-control" type="text" id="address" name="address" required="" placeholder="Main address area only" value="{{ context.address }}" autofocus="" autocomplete = "off" ></div>
-                <div class="form-group"><input class="form-control" type="text" id="state" name="state" required="" placeholder="State" autocomplete = "off" value="{{ context.state }}"></div>
-                <div class="form-group"><input class="form-control" type="text" id="city" name="city" required="" placeholder="City" autocomplete = "off" value="{{ context.city }}"></div>
-                <div class="form-group"><input class="form-control" type="text" id="ssc" name="ssc" required="" placeholder="SSC Marks" autocomplete = "off" value="{{ context.ssc }}"></div>
-                <div class="form-group"><input class="form-control" type="text" id="hsc" name="hsc" required="" placeholder="HSC Marks" autocomplete = "off" value="{{ context.hsc }}"></div>
-                <div class="form-group"><input class="form-control" type="text" id="ug" name="ug" required="" placeholder="UG Marks Agg." autocomplete = "off" value="{{ context.ug }}"></div>
-                <div class="form-group"><input class="form-control" type="text" id="pg" name="pg" placeholder="PG Marks Agg." autocomplete = "off" value="{{ context.pg }}"></div>
+                <div class="form-group"> <select class="form-control" name = "year" id = "year" onclick="years()"> <option value="FY"> FY </option> <option value="SY"> SY </option> <option value="TY"> TY </option>  </select></div>
+                <div class="form-group"> <select class="form-control" name = "shift" id = "shift" onclick="shifts()"> <option value="Shift I"> Shift I </option> <option value="Shift II"> Shift II </option></select></div>
+                <div class="form-group"><input class="form-control" type="text" id="address" name="address" required="" placeholder="Main address area only" autofocus="" autocomplete = "off" ></div>
+                <div class="form-group"><input class="form-control" type="text" id="state" name="state" required="" placeholder="State" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="city" name="city" required="" placeholder="City" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="ssc" name="ssc" required="" placeholder="SSC Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="hsc" name="hsc" required="" placeholder="HSC Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="ug" name="ug" required="" placeholder="UG Marks Agg." autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg" name="pg" placeholder="PG Marks Agg." autocomplete = "off"></div>
 
 
                 <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Save Profile</button></div>
@@ -90,14 +93,43 @@
         if(length == 4){
             $("#year").children().first().remove();
         }
-    }
+    };
       function shifts() {
         var length = document.getElementById("shift").length;
         if(length == 3){
             $("#shift").children().first().remove();
         }
 
-    }
+    };
+
+    $(document).ready(function () {
+        $.ajax({
+            method:'GET',
+            url:'http://127.0.0.1:8000/system/jsonprofile/',
+            data:{
+              csrfmiddlewaretoken: $('Input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function (data) {
+
+               $('#year').prepend('<option value =' + data.year + '>' + data.year + '</option>');
+               $('#year').prop("selectedIndex",0);
+
+               $('#shift').prepend('<option value =' + data.shift + '>' + data.shift + '</option>');
+               $('#shift').prop("selectedIndex",0);
+
+               $('#address').val(data.address);
+               $('#state').val(data.state);
+               $('#city').val(data.city);
+               $('#ssc').val(data.ssc);
+               $('#hsc').val(data.hsc);
+               $('#ug').val(data.ug);
+               $('#pg').val(data.pg);
+            },
+            error: function () {
+                alert("No data found. Please login !");
+            }
+        })
+    });
 
 
     </script>
@@ -117,7 +149,7 @@
         }
 
         function f() {
-            alert("You don't have right to access this page !");
+            alert("Session Timeout ! Please Login to use system !");
         }
     </script>
 </body>

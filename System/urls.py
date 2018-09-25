@@ -15,6 +15,7 @@ urlpatterns = [
     path('custom_email/', customEmail.as_view(), name="customemail"),
     path('logout/', logout, name="logout"),
     path('gprofile/', generateProfile.as_view(), name="generateProfile"),
+    path('jsonprofile/', genProfile, name="jsonprofile"),
 
 
 

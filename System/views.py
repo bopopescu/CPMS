@@ -1,3 +1,4 @@
+from django.core import serializers
 import mysql.connector
 import csv
 
@@ -58,9 +59,14 @@ class login(APIView):
             if user is not None:
                 auth.login(request,user)
                 if request.user.is_superuser:
-                    return HttpResponseRedirect("/system/criteria")
+                    return HttpResponseRedirect("/system/criteria/")
                 else:
-                    return HttpResponseRedirect("/system/profile/")
+                    try:
+                        profile.objects.get(email_id=email)
+                        return HttpResponseRedirect("/system/criteria/")
+                    except:
+                        return HttpResponseRedirect("/system/profile/")
+
             else:
                 messages.error(request, 'Username and Password did not matched !')
 
@@ -99,7 +105,7 @@ class criteria(APIView):
         mycursor = mydb.cursor()
 
         query = "select r.first_name , r.last_name, p.ssc, p.hsc, p.ug, p.pg, p.year, p.shift, p.email_id from auth_user r inner join profile p on r.email= p.email_id where "
-
+        query2 = "select p.email_id from auth_user r inner join profile p on r.email= p.email_id where "
         if count == 1:
 
             first = selecttype[0]
@@ -108,6 +114,7 @@ class criteria(APIView):
 
 
             query += "p." + first + " > " + cond1 + " AND p.year = '" + Year +"'"
+            query2 += "p." + first + " > " + cond1 + " AND p.year = '" + Year +"'"
 
 
             mycursor = mydb.cursor()
@@ -117,7 +124,7 @@ class criteria(APIView):
 
             for i in myresult:
                 writer.writerow(i)
-
+            request.session['query'] = query2
             return response
 
 
@@ -133,6 +140,8 @@ class criteria(APIView):
             cond2 = request.POST.get(val2)
 
             query += "p."+ first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND p.year = '" + Year +"'"
+            query2 += "p."+ first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND p.year = '" + Year +"'"
+
 
             mycursor.execute(query)
             myresult = mycursor.fetchall()
@@ -140,6 +149,7 @@ class criteria(APIView):
             for i in myresult:
                 writer.writerow(i)
 
+            request.session['query'] = query2
             return response
 
 
@@ -158,6 +168,8 @@ class criteria(APIView):
             cond3 = request.POST.get(val3)
 
             query += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND p.year = '" + Year +"'"
+            query2 += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND p.year = '" + Year +"'"
+
 
             mycursor.execute(query)
             myresult = mycursor.fetchall()
@@ -165,6 +177,7 @@ class criteria(APIView):
             for i in myresult:
                 writer.writerow(i)
 
+            request.session['query'] = query2
             return response
 
 
@@ -186,12 +199,14 @@ class criteria(APIView):
             cond4 = request.POST.get(val4)
 
             query += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND " + "p." + fourth + " > " + cond4 + " AND p.year = '" + Year +"'"
+            query2 += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND " + "p." + fourth + " > " + cond4 + " AND p.year = '" + Year +"'"
             mycursor.execute(query)
             myresult = mycursor.fetchall()
 
             for i in myresult:
                 writer.writerow(i)
 
+            request.session['query'] = query2
             return response
 
 
@@ -276,14 +291,32 @@ class customEmail(APIView):
         return render(request,"System/Custom_email.html")
 
     def post(self,request):
+
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="root",
+            database="cpms"
+        )
+
+        mycursor = mydb.cursor()
+        query = request.session['query']
+        mycursor.execute(query)
+        myresult = mycursor.fetchall()
+
+
         a = request.FILES.getlist('file')
         fromaddr = "ankushgochke@gmail.com"
-        toaddr = "monicasu1995@gmail.com"
         frompass = "fcpark22"
         msg = MIMEMultipart()
 
         msg['From'] = "ankushgochke@gmail.com"
-        msg['To'] = "monicasu1995@gmail.com"
+        recp = ''
+
+        for i in myresult:
+            recp += "".join(i)+", "
+
+        msg['To'] = recp
         msg['Subject'] = request.POST['subject']
 
         body =request.POST['email']
@@ -303,16 +336,21 @@ class customEmail(APIView):
         server.starttls()
         server.login(fromaddr, frompass)
         text = msg.as_string()
-        server.sendmail(fromaddr, toaddr, text)
+        server.sendmail(fromaddr, recp.split(','), text)
         server.quit()
+
+
+def genProfile(request):
+    email = request.user.email
+
+    obj = profile.objects.get(email_id=email)
+    context = profileSer(obj)
+    return JsonResponse(context.data,safe=False)
 
 
 class generateProfile(APIView):
     def get(self,request):
-        email = request.user.email
 
-        obj = profile.objects.get(email_id=email)
-        context = profileSer(obj)
-        return render(request,"System/reqprofile.html",{'context':context.data})
+        return render(request,"System/reqprofile.html")
 
 
