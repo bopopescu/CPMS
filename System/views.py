@@ -1,16 +1,28 @@
 import mysql.connector
 import csv
-import smtplib
+
 import string
 import random
 
+import smtplib
+
+from email.mime.base import MIMEBase
+from email import encoders
+
 from email.mime.multipart import MIMEMultipart
+from django.contrib.auth.models import User
 from email.mime.text import MIMEText
 from django.shortcuts import render,HttpResponseRedirect
 from rest_framework.views import APIView
-from .models import register,profile
+from .models import profile
 from django.http import HttpResponse
 from .serializer import profileSer
+from django.contrib import messages
+from django.contrib import auth
+from django.http import JsonResponse
+from rest_framework.response import Response
+
+
 
 
 def loadSignup(request):
@@ -29,20 +41,11 @@ class reg(APIView):
     def post(self,request):
         email = request.POST['email']
         fnm = request.POST['fnm']
-        mnm = request.POST['mnm']
         lnm = request.POST['lnm']
-        year = request.POST['year']
         password = request.POST['password']
 
-        reg = register()
-        reg.email = email
-        reg.first_name = fnm
-        reg.middle_name = mnm
-        reg.last_name = lnm
-        reg.year = year
-        reg.password = password
-        reg.save()
-        return HttpResponse('Saved')
+        User.objects.create_user(username=email,email=email,password=password,first_name=fnm,last_name=lnm)
+        return HttpResponse('Created!')
 
 class login(APIView):
 
@@ -51,12 +54,25 @@ class login(APIView):
         password = request.POST['password']
         request.session['email'] = email
         try:
-            register.objects.get(email=email,password=password)
-            return HttpResponseRedirect("/system/profile/")
-        except:
+            user = auth.authenticate(username=email,password=password)
+            if user is not None:
+                auth.login(request,user)
+                if request.user.is_superuser:
+                    return HttpResponseRedirect("/system/criteria")
+                else:
+                    return HttpResponseRedirect("/system/profile/")
+            else:
+                messages.error(request, 'Username and Password did not matched !')
 
-            return HttpResponseRedirect("/system/")
+        except auth.ObjectDoesNotExist:
+            print("Invalid user")
 
+        return HttpResponseRedirect("/system/")
+
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect("/system/")
 
 class criteria(APIView):
 
@@ -79,10 +95,10 @@ class criteria(APIView):
         response['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
 
         writer = csv.writer(response)
-        writer.writerow(['First name', 'Last name', 'ssc', 'hsc', 'ug', 'pg', 'Email address'])
+        writer.writerow(['First name', 'Last name', 'Ssc', 'Hsc', 'Ug', 'pg', 'Year', 'Shift', 'Email address'])
         mycursor = mydb.cursor()
 
-        query = "select r.first_name , r.last_name, p.ssc, p.hsc, p.ug, p.pg, p.email_id from register r inner join profile p on r.email= p.email_id where "
+        query = "select r.first_name , r.last_name, p.ssc, p.hsc, p.ug, p.pg, p.year, p.shift, p.email_id from auth_user r inner join profile p on r.email= p.email_id where "
 
         if count == 1:
 
@@ -91,7 +107,7 @@ class criteria(APIView):
             cond1 = request.POST.get(val)
 
 
-            query += "p." + first + " > " + cond1 + " AND r.year = '" + Year +"'"
+            query += "p." + first + " > " + cond1 + " AND p.year = '" + Year +"'"
 
 
             mycursor = mydb.cursor()
@@ -116,7 +132,7 @@ class criteria(APIView):
             cond1 = request.POST.get(val1)
             cond2 = request.POST.get(val2)
 
-            query += "p."+ first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND r.year = '" + Year +"'"
+            query += "p."+ first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND p.year = '" + Year +"'"
 
             mycursor.execute(query)
             myresult = mycursor.fetchall()
@@ -141,7 +157,7 @@ class criteria(APIView):
             cond2 = request.POST.get(val2)
             cond3 = request.POST.get(val3)
 
-            query += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND r.year = '" + Year +"'"
+            query += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND p.year = '" + Year +"'"
 
             mycursor.execute(query)
             myresult = mycursor.fetchall()
@@ -169,7 +185,7 @@ class criteria(APIView):
             cond3 = request.POST.get(val3)
             cond4 = request.POST.get(val4)
 
-            query += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND " + "p." + fourth + " > " + cond4 + " AND r.year = '" + Year +"'"
+            query += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND " + "p." + fourth + " > " + cond4 + " AND p.year = '" + Year +"'"
             mycursor.execute(query)
             myresult = mycursor.fetchall()
 
@@ -194,6 +210,7 @@ def checkit(str) :
 
 
 class profiles(APIView):
+
     def get(self,request):
         email = request.session.get('email')
         try:
@@ -205,7 +222,8 @@ class profiles(APIView):
 
 
     def post(self,request):
-        email = request.session.get('email')
+
+
         ser = profileSer(data=request.data)
         if ser.is_valid():
             ser.save()
@@ -223,12 +241,14 @@ class forgotPassword(APIView):
     def post(self, request):
 
         email = request.POST['email']
+
         try:
-            register.objects.get(email=email)
+            u = User.objects.get(email=email)
             msg = MIMEMultipart()
             pwd = randompassword()
             message = "Your new password is : " + pwd
-            register.objects.filter(email=email).update(password=pwd)
+            u.set_password(pwd)
+            u.save()
             password = "fcpark22"
             msg['From'] = "ankushgochke@gmail.com"
             msg['To'] = email
@@ -245,10 +265,54 @@ class forgotPassword(APIView):
             pass
 
 
-
 def randompassword():
     chars=string.ascii_uppercase + string.ascii_lowercase + string.digits
     size= 8
     return ''.join(random.choice(chars) for x in range(size, 16))
+
+
+class customEmail(APIView):
+    def get(self,request):
+        return render(request,"System/Custom_email.html")
+
+    def post(self,request):
+        a = request.FILES.getlist('file')
+        fromaddr = "ankushgochke@gmail.com"
+        toaddr = "monicasu1995@gmail.com"
+        frompass = "fcpark22"
+        msg = MIMEMultipart()
+
+        msg['From'] = "ankushgochke@gmail.com"
+        msg['To'] = "monicasu1995@gmail.com"
+        msg['Subject'] = request.POST['subject']
+
+        body =request.POST['email']
+
+        msg.attach(MIMEText(body, 'plain'))
+
+        for i in a:
+            part = MIMEBase('application', 'octet-stream')
+
+            part.set_payload(i.read())
+            encoders.encode_base64(part)
+            part.add_header('Content-Disposition', "attachment; filename= %s" % i)
+
+            msg.attach(part)
+
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(fromaddr, frompass)
+        text = msg.as_string()
+        server.sendmail(fromaddr, toaddr, text)
+        server.quit()
+
+
+class generateProfile(APIView):
+    def get(self,request):
+        email = request.user.email
+
+        obj = profile.objects.get(email_id=email)
+        context = profileSer(obj)
+        return render(request,"System/reqprofile.html",{'context':context.data})
 
 
