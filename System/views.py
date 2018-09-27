@@ -17,7 +17,7 @@ from django.shortcuts import render,HttpResponseRedirect
 from rest_framework.views import APIView
 from .models import *
 from django.http import HttpResponse
-from .serializer import profileSer
+from .serializer import *
 from django.contrib import messages
 from django.contrib import auth
 from django.http import JsonResponse
@@ -38,9 +38,8 @@ def loadCriteria(request):
     return render(request, "System/Criteria.html")
 
 
-
-
-
+def loadstudenthome(request):
+    return render(request,"System/StudentHome.html")
 
 class reg(APIView):
     def post(self,request):
@@ -66,10 +65,10 @@ class login(APIView):
                     return HttpResponseRedirect("/system/criteria/")
                 else:
                     try:
-                        profile.objects.get(email_id=email)
-                        return HttpResponseRedirect("/system/criteria/")
+                        personal.objects.get(email_id=email)
+                        return HttpResponseRedirect("/system/home/")
                     except:
-                        return HttpResponseRedirect("/system/profile/")
+                        return HttpResponseRedirect("/system/personal/")
 
             else:
                 messages.error(request, 'Username and Password did not matched !')
@@ -90,6 +89,21 @@ def loadpersonal(request):
     return render(request,"System/Personal.html")
 
 
+def loadprofileoptions(request):
+    return render(request,"System/ProfileOptions.html")
+
+def retrievepersonal(request):
+    email = request.user.email
+
+    obj = personal.objects.get(email_id=email)
+    context = personalSer(obj)
+    return JsonResponse(context.data, safe=False)
+
+def loadretrPersonal(request):
+    return render(request,"System/RetrievePersonal.html")
+
+
+
 class personals(APIView):
     def post(self,request):
         address = request.POST['address']
@@ -103,12 +117,11 @@ class personals(APIView):
         gender = request.POST['gender']
 
         email = request.session.get('email')
-        #obj = personal()
+
 
         personal.objects.create(email_id=email,gender=gender,dob=dob,address=address,city=city,state=state,contact=contact,first_name=fnm,middle_name=mnm,last_name=lnm)
-        return HttpResponse("Saved !")
-        #except:
-         #   return HttpResponse(address + " " + city + " " + state + " " + contact + " " + dob + " " + fnm + " " + mnm + " " + lnm + " " )
+        return HttpResponseRedirect("/system/profile/")
+
 
 class criteria(APIView):
 
@@ -271,7 +284,7 @@ class profiles(APIView):
         ser = profileSer(data=request.data)
         if ser.is_valid():
             ser.save()
-            return HttpResponse("Saved")
+            return HttpResponseRedirect("/system/home/")
         else:
             return HttpResponse("Error")
 
@@ -310,7 +323,7 @@ class forgotPassword(APIView):
 
 
 def randompassword():
-    chars=string.ascii_uppercase + string.digits
+    chars=string.ascii_uppercase + string.ascii_lowercase + string.digits
     size= 8
     return ''.join(random.choice(chars) for x in range(size, 16))
 
@@ -383,30 +396,34 @@ class generateProfile(APIView):
         return render(request,"System/reqprofile.html")
 
 
-class account(APIView):
-    def post(self, request):
-        email = request.POST['email']
-        try:
-            User.objects.get(email=email)
-            return render(request, "System/signup.html")
-        except:
-            u=User()
-            msg = MIMEMultipart()
-            pwd = randompassword()
-            message = "Your password is : " + pwd
-            u.set_password(pwd)
-            u.email=email
-            u.username=email;
-            u.save()
-            password = "fcpark22"
-            msg['From'] = "ankushgochke@gmail.com"
-            msg['To'] = email
-            msg['Subject'] = "MCOE MCA Placement system password change !"
-            msg.attach(MIMEText(message, 'plain'))
-            server = smtplib.SMTP('smtp.gmail.com: 587')
-            server.starttls()
-            server.login(msg['From'], password)
-            server.sendmail(msg['From'], msg['To'], msg.as_string())
-            server.quit()
-            return render(request,"System/Index.html")
+class updateProfile(APIView):
+    def post(self,request):
+        email = request.user.email
+        year = request.POST['year']
+        shift = request.POST['shift']
+        ssc = request.POST['ssc']
+        hsc = request.POST['hsc']
+        ug = request.POST['ug']
+        pg1 = request.POST['pg1']
+        pg2 = request.POST['pg2']
+        pg3 = request.POST['pg3']
+        pg4 = request.POST['pg4']
+        pg5 = request.POST['pg5']
+        profile.objects.all().filter(email_id=email).update(year=year,shift=shift,ssc=ssc,hsc=hsc,ug=ug,pg1=pg1,pg2=pg2,pg3=pg3,pg4=pg4,pg5=pg5)
+        return HttpResponse("Updated")
 
+
+class updatePersonal(APIView):
+    def post(self,request):
+        email = request.user.email
+        fnm = request.POST['fnm']
+        mnm = request.POST['mnm']
+        lnm = request.POST['lnm']
+        dob = request.POST['dob']
+        gender = request.POST['gender']
+        contact = request.POST['contact']
+        address = request.POST['address']
+        city = request.POST['city']
+        state = request.POST['state']
+        personal.objects.all().filter(email_id=email).update(first_name=fnm,middle_name=mnm,last_name=lnm,dob=dob,gender=gender,contact=contact,address=address,city=city,state=state)
+        return HttpResponse("Updated")

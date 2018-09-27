@@ -18,7 +18,13 @@ urlpatterns = [
     path('jsonprofile/', genProfile, name="jsonprofile"),
     path('personal/', loadpersonal, name="personal"),
     path('personalsave/', personals.as_view(), name="savepersonal"),
-    path('account/', account.as_view(), name="account"),
+    path('home/', loadstudenthome, name="Home"),
+    path('personaldata/', retrievepersonal, name="retrievepersonal"),
+    path('loadpersonaldata/', loadretrPersonal, name="loadpersonal"),
+    path('profileoptions/', loadprofileoptions, name="loadprofileoptions"),
+    path('updateprofile/', updateProfile.as_view(), name="updateprofile"),
+    path('updatepersonal/', updatePersonal.as_view(), name="updatePersonal"),
+
 
 
 
