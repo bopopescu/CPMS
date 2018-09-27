@@ -16,6 +16,8 @@ urlpatterns = [
     path('logout/', logout, name="logout"),
     path('gprofile/', generateProfile.as_view(), name="generateProfile"),
     path('jsonprofile/', genProfile, name="jsonprofile"),
+    path('personal/', loadpersonal, name="personal"),
+    path('personalsave/', personals.as_view(), name="savepersonal"),
 
 
 
