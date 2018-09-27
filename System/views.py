@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from email.mime.text import MIMEText
 from django.shortcuts import render,HttpResponseRedirect
 from rest_framework.views import APIView
-from .models import profile
+from .models import *
 from django.http import HttpResponse
 from .serializer import profileSer
 from django.contrib import messages
@@ -80,8 +80,33 @@ def logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/system/")
 
-class criteria(APIView):
 
+
+def loadpersonal(request):
+    return render(request,"System/Personal.html")
+
+
+class personals(APIView):
+    def post(self,request):
+        address = request.POST['address']
+        city = request.POST['city']
+        state = request.POST['state']
+        contact = request.POST['contact']
+        dob = request.POST['dob']
+        fnm = request.POST['fnm']
+        mnm = request.POST['mnm']
+        lnm = request.POST['lnm']
+        gender = request.POST['gender']
+
+        email = request.session.get('email')
+        #obj = personal()
+
+        personal.objects.create(email_id=email,gender=gender,dob=dob,address=address,city=city,state=state,contact=contact,first_name=fnm,middle_name=mnm,last_name=lnm)
+        return HttpResponse("Saved !")
+        #except:
+         #   return HttpResponse(address + " " + city + " " + state + " " + contact + " " + dob + " " + fnm + " " + mnm + " " + lnm + " " )
+
+class criteria(APIView):
 
 
     def post(self,request):
