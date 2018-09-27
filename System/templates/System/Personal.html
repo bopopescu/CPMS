@@ -24,6 +24,7 @@
     <link rel="stylesheet" href=" {% static "System/css/styles.css" %} " >
     <link rel="stylesheet" href="{% static "System/css/Login-Form-Clean-1.css" %}">
 
+
 </head>
 
 <body style="height:660px;">
@@ -67,21 +68,21 @@
                     <label style="margin-left: 18%; color: white"> Last Name</label>
 
                 </div>
-                <div class="form-group"><input type="text" id="fnm" name="fnm" required="" placeholder="First Name" autofocus="" autocomplete = "off" style="margin-left: 7%;color: black;background-color: white;height: 7%;">
-                <input type="text" id="mnm" name="mnm" required="" placeholder="Middle Name" autofocus="" autocomplete = "off" style="margin-left: 5%;height: 7%;background-color: white;color: black;">
-                <input type="text" id="lnm" name="lnm" required="" placeholder="Last Name" autocomplete = "off" style="margin-left: 5%;height: 7%;background-color: white;color: black;"></div>
+                <div class="form-group"><input type="text" id="fnm" name="fnm" onkeyup="validateName(this.id)" required="" placeholder="First Name" autofocus="" autocomplete = "off" style="margin-left: 7%;color: black;background-color: white;height: 7%;border-radius: 8px;">
+                <input type="text" id="mnm" name="mnm" required="" placeholder="Middle Name" onkeyup="validateName(this.id)" autofocus="" autocomplete = "off" style="margin-left: 5%;height: 7%;background-color: white;color: black;border-radius: 8px;">
+                <input type="text" id="lnm" name="lnm" required="" placeholder="Last Name" onkeyup="validateName(this.id)" autocomplete = "off" style="margin-left: 5%;height: 7%;background-color: white;color: black;border-radius: 8px;"></div>
                 <br><br>
-                <div class="form-group" style="margin-left: 10%"> <label style="color: white"> Date Of Birth :</label><input style="height: 5%;margin-left: 3%;background-color: white;color: black;height: 7%;width: 20%;" type="date" id="dob" name="dob" required="" autocomplete = "off">
+                <div class="form-group" style="margin-left: 10%"> <label style="color: white"> Date Of Birth :</label><input style="height: 5%;margin-left: 3%;background-color: white;color: black;border-radius: 8px;height: 7%;width: 20%;" type="date" id="dob" name="dob" required="" autocomplete = "off">
                 <label style="color: white;margin-left: 14%"> Gender :</label><select style="height: 5%;margin-left: 3%;background-color: white;color: black;height: 7%;width: 20%;" id="gender" name="gender" required="">
                         <option value="Male"> Male </option>
                         <option value="Female"> Female </option>
                     </select>
                 </div>
                 <br><br>
-                <div class="form-group"> <label style="color: white"> Address : </label> <input style="color: black;background-color: white;height: 7%;width: 50%" type="text" id="address" name="address" required="" placeholder="Main address area only" autofocus="" autocomplete = "off"></div>
-                <div class="form-group"> <label style="color: white"> State : </label> <input style="color: black;background-color: white;height: 7%;width: 50%" type="text" id="state" name="state" required="" placeholder="State" autocomplete = "off"></div>
-                <div class="form-group"> <label style="color: white"> City : </label> <input style="color: black;background-color: white;height: 7%;width: 50%" type="text" id="city" name="city" required="" placeholder="City" autocomplete = "off"></div>
-                <div class="form-group"> <label style="color: white"> Contact : </label> <input style="color: black;background-color: white;height: 7%;width: 50%" type="text" id="contact" name="contact" required="" placeholder="Contact" autocomplete = "off"></div>
+                <div class="form-group"> <label style="color: white"> Address : </label> <input style="color: black;background-color: white;height: 7%;width: 50%;border-radius: 8px;" type="text" id="address" name="address" required="" placeholder="Main address area only" autofocus="" autocomplete = "off"></div>
+                <div class="form-group"> <label style="color: white"> State : </label> <input style="color: black;background-color: white;height: 7%;width: 50%;border-radius: 8px;" type="text" onkeyup="validateName(this.id)" id="state" name="state" required="" placeholder="State" autocomplete = "off"></div>
+                <div class="form-group"> <label style="color: white"> City : </label> <input style="color: black;background-color: white;height: 7%;width: 50%;border-radius: 8px;" type="text" onkeyup="validateName(this.id)"id="city" name="city" required="" placeholder="City" autocomplete = "off"></div>
+                <div class="form-group"> <label style="color: white"> Contact : </label> <input style="color: black;background-color: white;height: 7%;width: 50%;border-radius: 8px;" type="text" id="contact" name="contact" onkeyup="validateName(this.id)" required="" placeholder="Contact" autocomplete = "off"></div>
 
                 <div><button class="btn btn-primary`" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Save Profile</button></div>
             </form>
@@ -91,6 +92,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script src=" {% static "System/js/bs-animation.js" %} "></script>
     <script src=" {% static "System/js/popper.min.js" %} "></script>
+    <script src=" {% static "System/js/validation.js" %} "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
 {%  else  %}
 
