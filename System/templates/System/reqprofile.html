@@ -56,26 +56,29 @@
         </div>
     </div>
     </div>
-    <div id="block" class="login-clean" style="padding-top:177px;max-height:300px;margin-top: 40px">
+    <div id="block" class="login-clean" style="padding-top:177px;max-height:300px;margin-top: 20px">
         <div class="container">
-            <form data-aos="fade" method="post" action="{%  url 'system:profile' %}" data-aos-duration="700" id="mainform" style="max-width:364px;margin-top:-88px;height:850px;">
+            <form data-aos="fade" method="post" action="{%  url 'system:updateprofile' %}" data-aos-duration="700" id="mainform" style="max-width:364px;margin-top:-70px;height:890px;">
                 {% csrf_token %}
                 <div class="form-group"><input class="form-control" type="hidden" id="email" name="email" placeholder="PG Marks Agg." autocomplete = "off" value="{{request.user.email}}"></div>
                 <h2 class="sr-only">Sign Up Form</h2>
                 <div class="illustration"><i class="typcn typcn-user" data-aos="fade" data-aos-duration="900" style="color:#e91e63;"></i></div>
                 <br>
-                <div class="form-group"> <select class="form-control" name = "year" id = "year" onclick="years()"> <option value="FY"> FY </option> <option value="SY"> SY </option> <option value="TY"> TY </option>  </select></div>
-                <div class="form-group"> <select class="form-control" name = "shift" id = "shift" onclick="shifts()"> <option value="Shift I"> Shift I </option> <option value="Shift II"> Shift II </option></select></div>
-                <div class="form-group"><input class="form-control" type="text" id="address" name="address" required="" placeholder="Main address area only" autofocus="" autocomplete = "off" ></div>
-                <div class="form-group"><input class="form-control" type="text" id="state" name="state" required="" placeholder="State" autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="city" name="city" required="" placeholder="City" autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="ssc" name="ssc" required="" placeholder="SSC Marks" autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="hsc" name="hsc" required="" placeholder="HSC Marks" autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="ug" name="ug" required="" placeholder="UG Marks Agg." autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="pg" name="pg" placeholder="PG Marks Agg." autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="hidden" id="email" name="email" placeholder="PG Marks Agg." autocomplete = "off" value="{{request.user.email}}"></div>
+                <h2 class="sr-only">Sign Up Form</h2>
+                 <div class="form-group"> <select class="form-control" onclick="years()" name = "year" id = "year"> <option value="FY"> FY </option> <option value="SY"> SY </option> <option value="TY"> TY </option>  </select></div>
+                <div class="form-group"> <select class="form-control" name = "shift" onclick="shifts()" id = "shift"> <option value="Shift I"> Shift I </option> <option value="Shift II"> Shift II </option></select></div>
+                <div class="form-group"><input class="form-control" type="text" id="ssc" onkeyup="validatePercentage(this.id)" name="ssc" required="" placeholder="SSC Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="hsc" onkeyup="validatePercentage(this.id)" name="hsc" required="" placeholder="HSC Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="ug" name="ug" onkeyup="validatePercentage(this.id)" required="" placeholder="UG Marks Agg." autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg1" name="pg1" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 1 Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg2" name="pg2" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 2 Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg3" name="pg3" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 3 Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg4" name="pg4" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 4 Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg5" name="pg5" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 5 Marks" autocomplete = "off"></div>
 
 
-                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Save Profile</button></div>
+                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Update Profile</button></div>
 
             </form>
         </div>
@@ -84,6 +87,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script src=" {% static "System/js/bs-animation.js" %} "></script>
     <script src=" {% static "System/js/popper.min.js" %} "></script>
+    <script src=" {% static "System/js/validation.js" %} "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
 
 
@@ -117,13 +121,15 @@
                $('#shift').prepend('<option value =' + data.shift + '>' + data.shift + '</option>');
                $('#shift').prop("selectedIndex",0);
 
-               $('#address').val(data.address);
-               $('#state').val(data.state);
-               $('#city').val(data.city);
                $('#ssc').val(data.ssc);
                $('#hsc').val(data.hsc);
                $('#ug').val(data.ug);
-               $('#pg').val(data.pg);
+               $('#pg1').val(data.pg1);
+               $('#pg2').val(data.pg2);
+               $('#pg3').val(data.pg3);
+               $('#pg4').val(data.pg4);
+               $('#pg5').val(data.pg5);
+
             },
             error: function () {
                 alert("No data found. Please login !");

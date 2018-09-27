@@ -53,7 +53,7 @@
         </div>
     </div>
     </div>
-    <div id="block" class="login-clean" style="padding-top:177px;max-height:300px;margin-top: 40px">
+    <div id="block" class="login-clean" style="padding-top: 120px;height:400px;margin-top: 40px">
         <div class="container">
             <form data-aos="fade" method="post" action="{%  url 'system:profile' %}" data-aos-duration="700" id="mainform" style="max-width:364px;margin-top:-88px;height:850px;">
                 {% csrf_token %}
@@ -63,14 +63,14 @@
                 <br>
                 <div class="form-group"> <select class="form-control" name = "year" id = "year"> <option value="FY"> FY </option> <option value="SY"> SY </option> <option value="TY"> TY </option>  </select></div>
                 <div class="form-group"> <select class="form-control" name = "shift" id = "shift"> <option value="Shift I"> Shift I </option> <option value="Shift II"> Shift II </option></select></div>
-                <div class="form-group"><input class="form-control" type="text" id="ssc" name="ssc" required="" placeholder="SSC Marks" autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="hsc" name="hsc" required="" placeholder="HSC Marks" autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="ug" name="ug" required="" placeholder="UG Marks Agg." autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="pg1" name="pg1" placeholder="PG Sem 1 Marks" autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="pg2" name="pg2" placeholder="PG Sem 2 Marks" autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="pg3" name="pg3" placeholder="PG Sem 3 Marks" autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="pg4" name="pg4" placeholder="PG Sem 4 Marks" autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="text" id="pg5" name="pg5" placeholder="PG Sem 5 Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="ssc" onkeyup="validatePercentage(this.id)" name="ssc" required="" placeholder="SSC Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="hsc" onkeyup="validatePercentage(this.id)" name="hsc" required="" placeholder="HSC Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="ug" name="ug" onkeyup="validatePercentage(this.id)" required="" placeholder="UG Marks Agg." autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg1" name="pg1" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 1 Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg2" name="pg2" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 2 Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg3" name="pg3" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 3 Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg4" name="pg4" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 4 Marks" autocomplete = "off"></div>
+                <div class="form-group"><input class="form-control" type="text" id="pg5" name="pg5" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 5 Marks" autocomplete = "off"></div>
 
 
                 <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Save Profile</button></div>

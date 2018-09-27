@@ -26,9 +26,9 @@
 
 
 </head>
-
-<body style="height:660px;">
 {% if user.is_authenticated %}
+<body style="height:660px;">
+
     <div class="container">
         <div>
             <div class="container">
@@ -56,7 +56,7 @@
     </div>
     <div id="block" class="login-clean" style="padding-top:177px;max-height:300px;margin-top: 40px">
         <div class="container">
-            <form data-aos="fade" method="post" action="{% url 'system:savepersonal' %}" data-aos-duration="700" id="mainform" style="max-width:900px;margin-top:-88px;height:850px;">
+            <form data-aos="fade" method="post" action="{% url 'system:updatePersonal' %}" data-aos-duration="700" id="mainform" style="max-width:900px;margin-top:-88px;height:850px;">
 
                 {% csrf_token %}
                 <h2 class="sr-only">Sign Up Form</h2>
@@ -73,7 +73,7 @@
                 <input type="text" id="lnm" name="lnm" required="" placeholder="Last Name" onkeyup="validateName(this.id)" autocomplete = "off" style="margin-left: 5%;height: 7%;background-color: white;color: black;border-radius: 8px;"></div>
                 <br><br>
                 <div class="form-group" style="margin-left: 10%"> <label style="color: white"> Date Of Birth :</label><input style="height: 5%;margin-left: 3%;background-color: white;color: black;border-radius: 8px;height: 7%;width: 20%;" type="date" id="dob" name="dob" required="" autocomplete = "off">
-                <label style="color: white;margin-left: 14%"> Gender :</label><select style="height: 5%;margin-left: 3%;background-color: white;color: black;height: 7%;width: 20%;" id="gender" name="gender" required="">
+                <label style="color: white;margin-left: 14%"> Gender :</label><select onclick="genders()" style="height: 5%;margin-left: 3%;background-color: white;color: black;height: 7%;width: 20%;" id="gender" name="gender" required="">
                         <option value="Male"> Male </option>
                         <option value="Female"> Female </option>
                     </select>
@@ -84,7 +84,7 @@
                 <div class="form-group"> <label style="color: white"> City : </label> <input style="color: black;background-color: white;height: 7%;width: 50%;border-radius: 8px;" type="text" onkeyup="validateName(this.id)"id="city" name="city" required="" placeholder="City" autocomplete = "off"></div>
                 <div class="form-group"> <label style="color: white"> Contact : </label> <input style="color: black;background-color: white;height: 7%;width: 50%;border-radius: 8px;" type="text" id="contact" name="contact" onkeyup="validateName(this.id)" required="" placeholder="Contact" autocomplete = "off"></div>
 
-                <div><button class="btn btn-primary`" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Save Profile</button></div>
+                <div><button class="btn btn-primary`" type="submit" id = "Save" style="background-color:rgb(233,30,99); ">Update Personal Data </button></div>
             </form>
         </div>
     </div>
@@ -94,6 +94,48 @@
     <script src=" {% static "System/js/popper.min.js" %} "></script>
     <script src=" {% static "System/js/validation.js" %} "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
+
+
+    <script>
+
+         function genders() {
+        var length = document.getElementById("gender").length;
+        if(length == 3){
+            $("#gender").children().first().remove();
+        }
+
+    };
+
+        $(document).ready(function () {
+        $.ajax({
+            method:'GET',
+            url:'http://127.0.0.1:8000/system/personaldata/',
+            data:{
+              csrfmiddlewaretoken: $('Input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function (data) {
+
+               $('#fnm').val(data.first_name);
+               $('#mnm').val(data.middle_name);
+               $('#lnm').val(data.last_name);
+               $('#dob').val(data.dob);
+               $('#contact').val(data.contact);
+               $('#address').val(data.address);
+               $('#city').val(data.city);
+               $('#state').val(data.state);
+               $('#gender').prepend('<option value =' + data.gender + '>' + data.gender + '</option>');
+               $('#gender').prop("selectedIndex",0);
+
+
+
+            },
+            error: function () {
+                alert("No data found. Please login !");
+            }
+        })
+    });
+
+    </script>
 {%  else  %}
 
     <body onload="clickerror()">
