@@ -35,4 +35,13 @@ function validatePass()
     }
 
 
+ function validateContact(num) {
 
+    var x=document.getElementById(num).value;
+
+    if(isNaN(x))
+    {
+        document.getElementById(num).value="";
+    }
+
+ }

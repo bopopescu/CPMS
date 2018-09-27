@@ -48,16 +48,14 @@
     </div>
     <div id="block" class="login-clean" style="padding-top:177px;max-height:255px;margin-top: 40px">
         <div class="container">
-            <form data-aos="fade" method="post" data-aos-duration="700" id="mainform" style="max-width:364px;margin-top:-88px;height:650px;">
+            <form data-aos="fade" action="{% url 'system:account' %}" method="post" data-aos-duration="700" id="mainform" style="max-width:364px;margin-top:-88px;height:350px;">
                 {% csrf_token %}
                 <h2 class="sr-only">Sign Up Form</h2>
                 <div class="illustration"><i class="typcn typcn-user-add" data-aos="fade" data-aos-duration="900" style="color:#e91e63;"></i></div>
                 <br>
 
                 <div class="form-group"><input class="form-control" type="email" id="email" name="email" required="" placeholder="Email" autocomplete = "off"></div>
-                <div class="form-group"><input class="form-control" type="password" id = "pwd" name="pwd" required="" placeholder="Password" autocomplete = "off" minlength = "6"></div>
-                <div class="form-group"><input class="form-control" type="password"  id="pwd1" name="pwd1" required="" placeholder="Confirm Password" autocomplete = "off" minlength = "6"></div>
-                <div class="form-group" style="padding-top: 5%"><button class="btn btn-primary btn-block" type="button" id = "save" style="background-color:rgb(233,30,99); ">Sign Up</button></div>
+                <div class="form-group" style="padding-top: 5%"><button class="btn btn-primary btn-block" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Sign Up</button></div>
 
             </form>
         </div>
@@ -67,47 +65,6 @@
     <script src=" {% static "System/js/bs-animation.js" %} "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
 
-
-        <script type="text/javascript">
-
-
-
-      $(document).on('click','#save',function (e) {
-          e.preventDefault();
-
-
-                  $.ajax({
-                      url: 'http://127.0.0.1:8000/system/register/',
-                      method: 'POST',
-                      data: {
-                          email: $('#email').val(),
-                          fnm: $('#fnm').val(),
-                          mnm: $('#mnm').val(),
-                          lnm: $('#lnm').val(),
-                          year: $('#year').val(),
-                          password: $('#pwd').val(),
-                          csrfmiddlewaretoken: $('Input[name=csrfmiddlewaretoken]').val(),
-
-                      },
-                      success: function () {
-                          alert("Saved")
-                          $('#mainform')[0].reset();
-                      },
-                      error: function () {
-                          alert("Error")
-                      }
-
-                  })
-
-
-      });
-
-
-
-
-
-
-    </script>
 
 
 
