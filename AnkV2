@@ -1,0 +1,824 @@
+Index: System/serializer.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- System/serializer.py	(revision 416e14f5e86ee3f6a04eb45cd90073543e192a99)
++++ System/serializer.py	(revision 89a22536a112abf4146d060fb5aece6801fe5edb)
+@@ -1,5 +1,5 @@
+ from rest_framework import serializers
+-from .models import register
++from .models import *
+ 
+ 
+ class signupSer(serializers.ModelSerializer):
+@@ -7,4 +7,10 @@
+     class Meta:
+ 
+         model = register
++        fields = '__all__'
++
++
++class profileSer(serializers.ModelSerializer):
++    class Meta:
++        model = profile
+         fields = '__all__'
+\ No newline at end of file
+Index: System/templates/System/Forgot.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- System/templates/System/Forgot.html	(revision 89a22536a112abf4146d060fb5aece6801fe5edb)
++++ System/templates/System/Forgot.html	(revision 89a22536a112abf4146d060fb5aece6801fe5edb)
+@@ -0,0 +1,123 @@
++{% load staticfiles %}
++<html>
++
++<head>
++    <meta charset="utf-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++
++
++    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
++
++<!-- jQuery library -->
++<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
++
++<!-- Popper JS -->
++<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
++
++<!-- Latest compiled JavaScript -->
++<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
++
++    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
++    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.min.css">
++    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.css">
++
++
++    <link rel="stylesheet" href=" {% static "System/css/Login-Form-Clean-1.css" %} " >
++    <link rel="stylesheet" href=" {% static "System/css/styles.css" %} " >
++    <link rel="stylesheet" href="{% static "System/css/Login-Form-Clean-1.css" %}">
++
++</head>
++
++
++<body style="height:660px;">
++<div id="loading" class="text-center" style="margin-top: 20%;display: none">
++    <img src="{% static "System/images/loader.gif" %}" >
++</div>
++
++
++    <div class="container">
++        <div>
++            <div class="container">
++                <nav class="navbar navbar-light navbar-expand-md fixed-top" id="mnav">
++                    <div class="container-fluid"><a class="navbar-brand" href="#" style="color:rgba(255,255,255,0.9);">Brand</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
++                        <div
++                            class="collapse navbar-collapse float-right justify-content-end" id="navcol-1" style="color:rgb(255,255,255);">
++                            <ul class="nav navbar-nav">
++                                <li class="nav-item" role="presentation" style="padding-right:15px;"><a class="nav-link" href="index.jsp" style="color:rgba(255,255,255,0.5);margin-right:15px;">Login</a></li>
++                                <li class="nav-item" role="presentation" id="sitem" style="margin-right:167px;"><a class="nav-link" href="#" id="sup" style="color:rgba(255,255,255,0.5);">Sign Up</a></li>
++                            </ul>
++                    </div>
++            </div>
++            </nav>
++        </div>
++    </div>
++    </div>
++    <div id="block" class="login-clean" style="padding-top:350px;max-height:255px;margin-top: 40px">
++        <div class="container">
++            <form data-aos="fade" method="post" data-aos-duration="700" id="mainform" style="max-width:364px;margin-top:-88px;height:400px;">
++                {% csrf_token %}
++                <h2 class="sr-only">Sign Up Form</h2>
++               <div class="illustration">
++				<i class="fa fa-search" data-aos="fade" data-aos-duration="900" style="padding-bottom: 10%; padding-top: 10%"></i><br>
++			</div>
++			<div class="form-group">
++				<input class="form-control" type="email" name="email" id = "email"
++					placeholder="Email" required style="margin-bottom: 10%">
++			</div>
++
++			<div class="form-group">
++				<button class="btn btn-primary btn-block" name = "save" id="save"
++						type="submit" style="background-color: rgb(233, 30, 99);">Search</button>
++
++			</div>
++
++            </form>
++        </div>
++    </div>
++
++    <script src=" {% static "System/js/jquery.min.js" %}"></script>
++    <script src=" {% static "System/js/bootstrap.min.js" %}"></script>
++    <script src=" {% static "System/js/bs-animation.js" %} "></script>
++    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
++
++
++ <script>
++
++         $(document).on('click','#save',function (e) {
++          e.preventDefault();
++
++          document.getElementById('mainform').style.display = "none";
++          document.getElementById('loading').style.display = "block";
++
++
++                  $.ajax({
++                      url: 'http://127.0.0.1:8000/system/ForgotPassword/',
++                      method: 'POST',
++                      data: {
++                          email: $('#email').val(),
++                          csrfmiddlewaretoken: $('Input[name=csrfmiddlewaretoken]').val(),
++
++                      },
++                      success: function () {
++                          alert("Successfully changed password ! Check your email for new password.");
++                           document.getElementById('mainform').style.display = "block";
++                           document.getElementById('loading').style.display = "none";
++                          $('#mainform')[0].reset();
++                      },
++                      error: function () {
++                          alert("Check email address");
++                           document.getElementById('mainform').style.display = "block";
++                           document.getElementById('loading').style.display = "none";
++                      }
++
++                  })
++
++
++      });
++
++</script>
++
++</body>
++
++
++</html>
+\ No newline at end of file
+Index: System/templates/System/Index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- System/templates/System/Index.html	(revision 416e14f5e86ee3f6a04eb45cd90073543e192a99)
++++ System/templates/System/Index.html	(revision 89a22536a112abf4146d060fb5aece6801fe5edb)
+@@ -56,7 +56,7 @@
+                 <div class="illustration"><i class="typcn typcn-cloud-storage-outline" data-aos="fade" data-aos-duration="1200" style="color:#e91e63; margin-bottom: 10px"></i></div>
+                 <div class="form-group"><input class="form-control" type="email" name="email" id="email" placeholder="Email" required autocomplete = "off"></div>
+                 <div class="form-group"><input class="form-control" type="password" id="password" name="password" placeholder="Password" required ></div>
+-                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id="login" style="background-color:rgb(233,30,99);" di>Log In</button></div><a href="forgot.jsp" class="forgot" style="color:rgb(255,255,255);">Forgot your email or password?</a></form>
++                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id="login" style="background-color:rgb(233,30,99);" di>Log In</button></div><a href="{% url 'system:forgotpassword' %}" class="forgot" style="color:rgb(255,255,255);">Forgot your email or password?</a></form>
+         </div>
+     </div>
+       <script src=" {% static "System/js/jquery.min.js" %}"></script>
+@@ -65,11 +65,6 @@
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
+ 
+ 
+-<script type="text/javascript">
+-    {% if flag == 1 %}
+-   alert("Incorrect credentials. Try again ! If you don't remember your password, click on Forgot Password to recover.");
+-    {% endif %}
+-</script>
+ 
+ 
+ 
+Index: System/templates/System/Profile.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- System/templates/System/Profile.html	(revision 416e14f5e86ee3f6a04eb45cd90073543e192a99)
++++ System/templates/System/Profile.html	(revision 89a22536a112abf4146d060fb5aece6801fe5edb)
+@@ -1,0 +1,81 @@
++{% load staticfiles %}
++<html>
++
++<head>
++    <meta charset="utf-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++
++
++    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
++
++<!-- jQuery library -->
++<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
++
++<!-- Popper JS -->
++<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
++
++<!-- Latest compiled JavaScript -->
++<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
++
++    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
++    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.min.css">
++    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.css">
++
++
++    <link rel="stylesheet" href=" {% static "System/css/Login-Form-Clean-1.css" %} " >
++    <link rel="stylesheet" href=" {% static "System/css/styles.css" %} " >
++    <link rel="stylesheet" href="{% static "System/css/Login-Form-Clean-1.css" %}">
++
++</head>
++
++<body style="height:660px;">
++    <div class="container">
++        <div>
++            <div class="container">
++                <nav class="navbar navbar-light navbar-expand-md fixed-top" id="mnav">
++                    <div class="container-fluid"><a class="navbar-brand" href="#" style="color:rgba(255,255,255,0.9);">Brand</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
++                        <div
++                            class="collapse navbar-collapse float-right justify-content-end" id="navcol-1" style="color:rgb(255,255,255);">
++                            <ul class="nav navbar-nav">
++                                <li class="nav-item" role="presentation" style="padding-right:15px;"><a class="nav-link" style="color:rgba(255,255,255,0.5);margin-right:15px;">Logout</a></li>
++
++                            </ul>
++                    </div>
++            </div>
++            </nav>
++        </div>
++    </div>
++    </div>
++    <div id="block" class="login-clean" style="padding-top:177px;max-height:300px;margin-top: 40px">
++        <div class="container">
++            <form data-aos="fade" method="post" action="{%  url 'system:profile' %}" data-aos-duration="700" id="mainform" style="max-width:364px;margin-top:-88px;height:750px;">
++                {% csrf_token %}
++                <div class="form-group"><input class="form-control" type="hidden" id="email" name="email" placeholder="PG Marks Agg." autocomplete = "off" value="{{ context }}"></div>
++                <h2 class="sr-only">Sign Up Form</h2>
++                <div class="illustration"><i class="typcn typcn-user" data-aos="fade" data-aos-duration="900" style="color:#e91e63;"></i></div>
++                <br>
++                <div class="form-group"><input class="form-control" type="text" id="address" name="address" required="" placeholder="Main address area only" autofocus="" autocomplete = "off"></div>
++                <div class="form-group"><input class="form-control" type="text" id="state" name="state" required="" placeholder="State" autocomplete = "off"></div>
++                <div class="form-group"><input class="form-control" type="text" id="city" name="city" required="" placeholder="City" autocomplete = "off"></div>
++                <div class="form-group"><input class="form-control" type="text" id="pin" maxlength="6" name="pin" required="" placeholder="Pin" autocomplete = "off"></div>
++                <div class="form-group"><input class="form-control" type="text" id="ssc" name="ssc" required="" placeholder="SSC Marks" autocomplete = "off"></div>
++                <div class="form-group"><input class="form-control" type="text" id="hsc" name="hsc" required="" placeholder="HSC Marks" autocomplete = "off"></div>
++                <div class="form-group"><input class="form-control" type="text" id="ug" name="ug" required="" placeholder="UG Marks Agg." autocomplete = "off"></div>
++                <div class="form-group"><input class="form-control" type="text" id="pg" name="pg" placeholder="PG Marks Agg." autocomplete = "off"></div>
++
++
++                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Save Profile</button></div>
++
++            </form>
++        </div>
++    </div>
++    <script src=" {% static "System/js/jquery.min.js" %}"></script>
++    <script src=" {% static "System/js/bootstrap.min.js" %}"></script>
++    <script src=" {% static "System/js/bs-animation.js" %} "></script>
++    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
++
++
++
++</body>
++
++</html>
+\ No newline at end of file
+Index: System/urls.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- System/urls.py	(revision 416e14f5e86ee3f6a04eb45cd90073543e192a99)
++++ System/urls.py	(revision 89a22536a112abf4146d060fb5aece6801fe5edb)
+@@ -1,6 +1,6 @@
+ from django.contrib import admin
+ from django.urls import path,include
+-from .views import loadSignup,reg,loadLogin,login,loadCriteria,criteria
++from .views import *
+ 
+ app_name = "system"
+ urlpatterns = [
+@@ -10,6 +10,10 @@
+     path('find_students/',criteria.as_view(),name="FindStudents"),
+     path('register_student/', loadSignup, name="Signup"),
+     path('register/', reg.as_view(), name="register"),
++    path('profile/', profiles.as_view(), name="profile"),
++    path('ForgotPassword/', forgotPassword.as_view(), name="forgotpassword"),
++
++
+ 
+ 
+ ]
+Index: System/views.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- System/views.py	(revision 416e14f5e86ee3f6a04eb45cd90073543e192a99)
++++ System/views.py	(revision 89a22536a112abf4146d060fb5aece6801fe5edb)
+@@ -1,12 +1,18 @@
+ 
+ import mysql.connector
+ import csv
++from email.mime.multipart import MIMEMultipart
++from email.mime.text import MIMEText
++import smtplib
++import string
++import random
++
+ 
+ from django.shortcuts import render,HttpResponseRedirect
+ from rest_framework.views import APIView
+ from .models import register,profile
+ from django.http import HttpResponse
+-from .serializer import signupSer
++from .serializer import signupSer,profileSer
+ 
+ # Create your views here.
+ 
+@@ -22,6 +28,7 @@
+ def loadCriteria(request):
+     return render(request, "System/Criteria.html")
+ 
++
+ class reg(APIView):
+     def post(self,request):
+         email = request.POST['email']
+@@ -42,12 +49,14 @@
+         return HttpResponse('Saved')
+ 
+ class login(APIView):
++
+     def post(self,request):
+         email = request.POST['email']
+         password = request.POST['password']
++        request.session['email'] = email
+         try:
+             register.objects.get(email=email,password=password)
+-            return HttpResponse("Logged in successfully")
++            return HttpResponseRedirect("/system/profile/")
+         except:
+ 
+             return HttpResponseRedirect("/system/")
+@@ -188,3 +197,73 @@
+         return 'postg'
+ 
+ 
++class profiles(APIView):
++    def get(self,request):
++        email = request.session.get('email')
++        try:
++            pro = profile.objects.get(email=email)
++            return render(request, "System/Criteria.html")
++        except:
++
++            return render(request, "System/Profile.html",{"context":email})
++
++
++    def post(self,request):
++        email = request.session.get('email')
++        ser = profileSer(data=request.data)
++        if ser.is_valid():
++            ser.save()
++            return HttpResponse("Saved")
++        else:
++            return HttpResponse("Error")
++
++
++class forgotPassword(APIView):
++    def get(self,request):
++        return render(request,"System/Forgot.html")
++
++    def post(self, request):
++
++        email = request.POST['email']
++        try:
++            object = register.objects.get(email=email)
++             # create message object instance
++            msg = MIMEMultipart()
++            pwd = randompassword()
++            message = "Your new password is : " + pwd
++            register.objects.filter(email=email).update(password=pwd)
++
++                # setup the parameters of the message
++            password = "fcpark22"
++            msg['From'] = "ankushgochke@gmail.com"
++            msg['To'] = email
++            msg['Subject'] = "MCOE MCA Placement system password change !"
++
++                # add in the message body
++            msg.attach(MIMEText(message, 'plain'))
++
++                # create server
++            server = smtplib.SMTP('smtp.gmail.com: 587')
++
++            server.starttls()
++
++                # Login Credentials for sending the mail
++            server.login(msg['From'], password)
++
++                # send the message via the server.
++            server.sendmail(msg['From'], msg['To'], msg.as_string())
++
++            server.quit()
++
++            return HttpResponse('')
++
++        except:
++            pass
++
++
++
++def randompassword():
++    chars=string.ascii_uppercase + string.ascii_lowercase + string.digits
++    size= 8
++    return ''.join(random.choice(chars) for x in range(size,16))
++
+diff --git System/static/System/images/loader.gif System/static/System/images/loader.gif
+new file mode 100644
+index 0000000000000000000000000000000000000000..c14d41623803acaf727ef1add109fca3b655e32e
+GIT binary patch
+literal 67147
+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
+RtY<yzS<iabv!4HR{t1KW$>9J1
+
