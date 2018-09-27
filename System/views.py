@@ -38,6 +38,10 @@ def loadCriteria(request):
     return render(request, "System/Criteria.html")
 
 
+
+
+
+
 class reg(APIView):
     def post(self,request):
         email = request.POST['email']
@@ -306,7 +310,7 @@ class forgotPassword(APIView):
 
 
 def randompassword():
-    chars=string.ascii_uppercase + string.ascii_lowercase + string.digits
+    chars=string.ascii_uppercase + string.digits
     size= 8
     return ''.join(random.choice(chars) for x in range(size, 16))
 
@@ -378,4 +382,31 @@ class generateProfile(APIView):
 
         return render(request,"System/reqprofile.html")
 
+
+class account(APIView):
+    def post(self, request):
+        email = request.POST['email']
+        try:
+            User.objects.get(email=email)
+            return render(request, "System/signup.html")
+        except:
+            u=User()
+            msg = MIMEMultipart()
+            pwd = randompassword()
+            message = "Your password is : " + pwd
+            u.set_password(pwd)
+            u.email=email
+            u.username=email;
+            u.save()
+            password = "fcpark22"
+            msg['From'] = "ankushgochke@gmail.com"
+            msg['To'] = email
+            msg['Subject'] = "MCOE MCA Placement system password change !"
+            msg.attach(MIMEText(message, 'plain'))
+            server = smtplib.SMTP('smtp.gmail.com: 587')
+            server.starttls()
+            server.login(msg['From'], password)
+            server.sendmail(msg['From'], msg['To'], msg.as_string())
+            server.quit()
+            return render(request,"System/Index.html")
 
