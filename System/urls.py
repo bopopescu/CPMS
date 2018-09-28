@@ -28,6 +28,8 @@ urlpatterns = [
     path('account/', account.as_view(), name="account"),
     path('loadmail/', loadmail, name="loadmail"),
     path('sendmail/', mainmail.as_view(), name="mainmail"),
+    path('adminhome/', loadadminhome, name="loadadminhome"),
+    #path('loadmailscreen/', loadmailscreen, name="loadmailscreen"),
 
 
 

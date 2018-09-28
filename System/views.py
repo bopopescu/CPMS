@@ -41,6 +41,9 @@ def loadCriteria(request):
 def loadstudenthome(request):
     return render(request,"System/StudentHome.html")
 
+def loadadminhome(request):
+    return render(request,"System/AdminHome.html")
+
 class reg(APIView):
     def post(self,request):
         email = request.POST['email']
@@ -62,7 +65,7 @@ class login(APIView):
             if user is not None:
                 auth.login(request,user)
                 if request.user.is_superuser:
-                    return HttpResponseRedirect("/system/criteria/")
+                    return HttpResponseRedirect("/system/adminhome/")
                 else:
                     try:
                         personal.objects.get(email_id=email)
@@ -156,6 +159,21 @@ class criteria(APIView):
 
         query = "select r.first_name ,r.middle_name, r.last_name, p.ssc, p.hsc, p.ug, p.pg1,p.pg2,p.pg3,p.pg4,p.pg5, p.year, p.shift, p.email_id from personal r inner join profile p on r.email_id= p.email_id where "
 
+        if count == 0:
+            query += 'p.year ="' + Year + '"'
+            request.session['query'] = query
+
+            mycursor = mydb.cursor()
+
+            mycursor.execute(query)
+            myresult = mycursor.fetchall()
+
+            for i in myresult:
+                writer.writerow(i)
+
+            return response
+
+
         if count == 1:
 
             first = selecttype[0]
@@ -164,7 +182,7 @@ class criteria(APIView):
 
 
             query += "p." + first + " > " + cond1 + " AND p.year = '" + Year +"'"
-            query2 += "p." + first + " > " + cond1 + " AND p.year = '" + Year +"'"
+
 
 
             mycursor = mydb.cursor()
@@ -326,7 +344,8 @@ class forgotPassword(APIView):
             return HttpResponse('')
 
         except:
-            pass
+            flag = 1
+            return render(request,"System/Index.html",{"Message":msg,"flag":flag})
 
 
 def randompassword():
