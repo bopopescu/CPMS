@@ -33,7 +33,7 @@
         <div>
             <div class="container">
                 <nav class="navbar navbar-light navbar-expand-md fixed-top" id="mnav">
-                    <div class="container-fluid"><a class="navbar-brand" href="#" style="color:rgba(255,255,255,0.9);">Brand</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                   <div class="container-fluid"><a class="navbar-brand" href="{% url 'system:Home' %}" style="color:rgba(255,255,255,0.9);">MCA Department Placement System</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                         <div
                             class="collapse navbar-collapse float-right justify-content-end" id="navcol-1" style="color:rgb(255,255,255);">
                             <ul class="nav navbar-nav">
@@ -56,7 +56,7 @@
     </div>
     <div id="block" class="login-clean" style="padding-top:177px;max-height:150px;margin-top: 40px">
         <div class="container">
-            K
+
             <form data-aos="fade" method="post" action="{% url 'system:savepersonal' %}" data-aos-duration="700" id="mainform" style="max-width:900px;margin-top:-88px;height:700px;">
 
                 {% csrf_token %}
@@ -72,7 +72,7 @@
                 <div class="form-group" style="margin-left: 10%">
 
                     <label style="color: white"> Date Of Birth :</label><input class ="text-center" style=" height: 3%;margin-left: 1%;background-color: white;color: black;border-radius: 8px;height: 5%;width: 17%;" type="date" id="dob" name="dob" required="" autocomplete = "off">
-                <label style="color: white;margin-left: 14%"> Gender :</label><select style="height: 5%;margin-left: 1%;background-color: border-radius: 8px; white;color: black;height: 5%;width: 15%;" id="gender" name="gender" required="">
+                <label style="color: white;margin-left: 14%"> Gender :</label><select style="height: 5%;margin-left: 1%;background-color: border-radius: 8px;background-color: white;color: black;height: 5%;width: 15%;" id="gender" name="gender" required="">
                         <option value="Male"> Male </option>
                         <option value="Female"> Female </option>
                     </select>
