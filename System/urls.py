@@ -26,6 +26,8 @@ urlpatterns = [
     path('updatepersonal/', updatePersonal.as_view(), name="updatePersonal"),
     path('placement/', loadplacement, name="loadplacement"),
     path('account/', account.as_view(), name="account"),
+    path('loadmail/', loadmail, name="loadmail"),
+    path('sendmail/', mainmail.as_view(), name="mainmail"),
 
 
 

@@ -8,14 +8,14 @@ from django.contrib.auth.models import User
 
 class profile(models.Model):
     email = models.ForeignKey(User,to_field="username",on_delete=models.CASCADE,unique=True)
-    ssc = models.CharField(max_length=4)
-    hsc = models.CharField(max_length=4)
-    ug = models.CharField(max_length=4)
-    pg1 = models.CharField(max_length=4,blank=True,null=True)
-    pg2 = models.CharField(max_length=4,blank=True,null=True)
-    pg3 = models.CharField(max_length=4,blank=True,null=True)
-    pg4 = models.CharField(max_length=4,blank=True,null=True)
-    pg5 = models.CharField(max_length=4,blank=True,null=True)
+    ssc = models.CharField(max_length=6)
+    hsc = models.CharField(max_length=6)
+    ug = models.CharField(max_length=6)
+    pg1 = models.CharField(max_length=6,blank=True,null=True)
+    pg2 = models.CharField(max_length=6,blank=True,null=True)
+    pg3 = models.CharField(max_length=6,blank=True,null=True)
+    pg4 = models.CharField(max_length=6,blank=True,null=True)
+    pg5 = models.CharField(max_length=6,blank=True,null=True)
     year = models.CharField(max_length=4)
     shift = models.CharField(max_length=50)
 

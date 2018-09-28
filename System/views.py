@@ -106,6 +106,9 @@ def retrievepersonal(request):
 def loadretrPersonal(request):
     return render(request,"System/RetrievePersonal.html")
 
+def loadmail(request):
+    return render(request,"System/MailHome.html")
+
 
 
 class personals(APIView):
@@ -147,11 +150,12 @@ class criteria(APIView):
         response['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
 
         writer = csv.writer(response)
-        writer.writerow(['First name', 'Last name', 'Ssc', 'Hsc', 'Ug', 'pg', 'Year', 'Shift', 'Email address'])
+        writer.writerow(['First name', 'Middle name', 'Last name', 'Ssc', 'Hsc', 'Ug', 'Pg1','Pg2','Pg3','Pg4','Pg5', 'Year', 'Shift', 'Email address'])
         mycursor = mydb.cursor()
 
-        query = "select r.first_name , r.last_name, p.ssc, p.hsc, p.ug, p.pg, p.year, p.shift, p.email_id from auth_user r inner join profile p on r.email= p.email_id where "
-        query2 = "select p.email_id from auth_user r inner join profile p on r.email= p.email_id where "
+
+        query = "select r.first_name ,r.middle_name, r.last_name, p.ssc, p.hsc, p.ug, p.pg1,p.pg2,p.pg3,p.pg4,p.pg5, p.year, p.shift, p.email_id from personal r inner join profile p on r.email_id= p.email_id where "
+
         if count == 1:
 
             first = selecttype[0]
@@ -170,7 +174,7 @@ class criteria(APIView):
 
             for i in myresult:
                 writer.writerow(i)
-            request.session['query'] = query2
+
             return response
 
 
@@ -186,7 +190,7 @@ class criteria(APIView):
             cond2 = request.POST.get(val2)
 
             query += "p."+ first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND p.year = '" + Year +"'"
-            query2 += "p."+ first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND p.year = '" + Year +"'"
+
 
 
             mycursor.execute(query)
@@ -195,7 +199,7 @@ class criteria(APIView):
             for i in myresult:
                 writer.writerow(i)
 
-            request.session['query'] = query2
+
             return response
 
 
@@ -214,7 +218,7 @@ class criteria(APIView):
             cond3 = request.POST.get(val3)
 
             query += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND p.year = '" + Year +"'"
-            query2 += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND p.year = '" + Year +"'"
+
 
 
             mycursor.execute(query)
@@ -223,7 +227,7 @@ class criteria(APIView):
             for i in myresult:
                 writer.writerow(i)
 
-            request.session['query'] = query2
+
             return response
 
 
@@ -245,14 +249,14 @@ class criteria(APIView):
             cond4 = request.POST.get(val4)
 
             query += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND " + "p." + fourth + " > " + cond4 + " AND p.year = '" + Year +"'"
-            query2 += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND " + "p." + fourth + " > " + cond4 + " AND p.year = '" + Year +"'"
+
             mycursor.execute(query)
             myresult = mycursor.fetchall()
 
             for i in myresult:
                 writer.writerow(i)
 
-            request.session['query'] = query2
+
             return response
 
 
@@ -268,7 +272,6 @@ def checkit(str) :
 
     if str == "pg":
         return 'postg'
-
 
 class profiles(APIView):
 
@@ -460,3 +463,93 @@ class account(APIView):
             return HttpResponse('')
         except:
             return HttpResponse('Already Exists')
+
+
+class mainmail(APIView):
+    def post(self,request):
+        selecttype = request.POST.getlist('check')
+        Year = request.POST['Year']
+        count = len(selecttype)
+
+
+        #query = "select r.first_name ,r.middle_name, r.last_name, p.ssc, p.hsc, p.ug, p.pg1,p.pg2,p.pg3,p.pg4,p.pg5, p.year, p.shift, p.email_id from personal r inner join profile p on r.email_id= p.email_id where "
+        query2 = "select p.email_id from auth_user r inner join profile p on r.email= p.email_id where "
+
+        if count == 0:
+
+            query2 += 'p.year ="' + Year + '"'
+            request.session['query'] = query2
+            return render(request,"System/Custom_email.html")
+
+        if count == 1:
+
+            first = selecttype[0]
+            val = checkit(first)
+            cond1 = request.POST.get(val)
+
+           # query += "p." + first + " > " + cond1 + " AND p.year = '" + Year + "'"
+            query2 += "p." + first + " > " + cond1 + " AND p.year = '" + Year + "'"
+
+
+            request.session['query'] = query2
+            return render(request, "System/Custom_email.html")
+
+        if count == 2:
+            first = selecttype[0]
+            second = selecttype[1]
+
+            val1 = checkit(first)
+            val2 = checkit(second)
+
+            cond1 = request.POST.get(val1)
+            cond2 = request.POST.get(val2)
+
+            #query += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND p.year = '" + Year + "'"
+            query2 += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND p.year = '" + Year + "'"
+
+
+            request.session['query'] = query2
+            return render(request, "System/Custom_email.html")
+
+        if count == 3:
+            first = selecttype[0]
+            second = selecttype[1]
+            third = selecttype[2]
+
+            val1 = checkit(first)
+            val2 = checkit(second)
+            val3 = checkit(third)
+
+            cond1 = request.POST.get(val1)
+            cond2 = request.POST.get(val2)
+            cond3 = request.POST.get(val3)
+
+            #query += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND p.year = '" + Year + "'"
+            query2 += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND p.year = '" + Year + "'"
+
+
+            request.session['query'] = query2
+            return render(request, "System/Custom_email.html")
+
+        if count == 4:
+            first = selecttype[0]
+            second = selecttype[1]
+            third = selecttype[2]
+            fourth = selecttype[3]
+
+            val1 = checkit(first)
+            val2 = checkit(second)
+            val3 = checkit(third)
+            val4 = checkit(fourth)
+
+            cond1 = request.POST.get(val1)
+            cond2 = request.POST.get(val2)
+            cond3 = request.POST.get(val3)
+            cond4 = request.POST.get(val4)
+
+            #query += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND " + "p." + fourth + " > " + cond4 + " AND p.year = '" + Year + "'"
+            query2 += "p." + first + " > " + cond1 + " AND " + "p." + second + " > " + cond2 + " AND " + "p." + third + " > " + cond3 + " AND " + "p." + fourth + " > " + cond4 + " AND p.year = '" + Year + "'"
+
+
+            request.session['query'] = query2
+            return render(request, "System/Custom_email.html")
