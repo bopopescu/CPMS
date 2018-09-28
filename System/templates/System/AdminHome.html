@@ -26,6 +26,7 @@
 
 
 </head>
+{% if user.is_superuser %}
 <body>
 <div class="container">
         <div>
@@ -61,18 +62,17 @@
 
                	<div class="col-sm-4" id="col1" name = "col1"  style="height: 300px;">
 
-                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:loadprofileoptions' %}">
+                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:criteria' %}">
 
                          </a>
-                    <p style="color: white;" class="text-center"> <b> Update Profile </b> </p>
+                    <p style="color: white;" class="text-center"> <b> Criteria Wise Sheet </b> </p>
                	</div>
 
-               		<div class="col-sm-4 offset-1" id="col1" name = "col1"  style="height: 300px;">
+               		<div class="col-sm-4 offset-sm-1" id="col2" name="col2" style="height: 300px;">
+                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:loadmail' %}">
 
-                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:loadplacement' %}">
-
-                         </a>
-                    <p style="color: white;" class="text-center"> <b> Placement Status </b> </p>
+                    </a>
+                    <p style="color: white;" class="text-center"> <b> Email Students </b> </p>
                	</div>
                	<div class="col-sm-2"></div>
 
@@ -85,12 +85,24 @@
     <script src=" {% static "System/js/validation.js" %} "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
 
-<script>
-    function f() {
-        alert("Hey")
-    }
+{%  else  %}
+    <body onload="clickerror()">
+     <button id = "error" onclick="f()" hidden> </button>
+    <form action="{% url 'system:Home' %}" onload="f()" method="post">
+    {% csrf_token %}
+    <input type="submit" id="save" hidden>
+    </form>
 
+    <script>
+        function clickerror() {
+            $('#error').click();
+            $('#save').click();
+        }
 
-</script>
+        function f() {
+            alert("No rights !");
+        }
+    </script>
 </body>
+{% endif %}
 </html>

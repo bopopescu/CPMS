@@ -50,7 +50,7 @@
     </div>
     </div>
 
-	<form action="{% url 'system:FindStudents' %}" method="post">
+	<form method="post" action="{% url 'system:mainmail' %}">
         {% csrf_token %}
 		<div id="divs">
 			<div class="container" style="margin-top: 228px;">
@@ -61,6 +61,8 @@
                             <option value="FY"> FY </option>
                             <option value="SY"> SY </option>
                             <option value="TY"> TY </option>
+
+
 
 
                         </select>
@@ -167,11 +169,6 @@
 	</form>
 
 	<script type="text/javascript">
-		function acceptfnm() {
-			var filenm = prompt('Enter File name : ');
-			document.getElementById('hide').value = filenm;
-
-		}
 
 		function doten(c1, c2) {
 
