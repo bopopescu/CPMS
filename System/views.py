@@ -21,7 +21,7 @@ from .serializer import *
 from django.contrib import messages
 from django.contrib import auth
 from django.http import JsonResponse
-from rest_framework.response import Response
+
 
 
 
@@ -91,6 +91,10 @@ def loadpersonal(request):
 
 def loadprofileoptions(request):
     return render(request,"System/ProfileOptions.html")
+
+
+def loadplacement(request):
+    return render(request,"System/PlacementDetails.html")
 
 def retrievepersonal(request):
     email = request.user.email
@@ -410,7 +414,7 @@ class updateProfile(APIView):
         pg4 = request.POST['pg4']
         pg5 = request.POST['pg5']
         profile.objects.all().filter(email_id=email).update(year=year,shift=shift,ssc=ssc,hsc=hsc,ug=ug,pg1=pg1,pg2=pg2,pg3=pg3,pg4=pg4,pg5=pg5)
-        return HttpResponse("Updated")
+        return HttpResponseRedirect("/system/home/")
 
 
 class updatePersonal(APIView):
@@ -426,4 +430,33 @@ class updatePersonal(APIView):
         city = request.POST['city']
         state = request.POST['state']
         personal.objects.all().filter(email_id=email).update(first_name=fnm,middle_name=mnm,last_name=lnm,dob=dob,gender=gender,contact=contact,address=address,city=city,state=state)
-        return HttpResponse("Updated")
+        return HttpResponseRedirect("/system/home/")
+
+
+
+class account(APIView):
+    def post(self, request):
+        email = request.POST['email']
+        try:
+            u=User()
+            msg = MIMEMultipart()
+            pwd = randompassword()
+            message ="Your password is : " + pwd
+            u.set_password(pwd)
+            u.email=email
+            u.username=email
+            u.save()
+            password = "fcpark22"
+            msg['From'] = "ankushgochke@gmail.com"
+            msg['To'] = email
+            msg['Subject'] = "Password for MCA placement System"
+            msg.attach(MIMEText(message, 'plain'))
+            server = smtplib.SMTP('smtp.gmail.com: 587')
+            server.starttls()
+            server.login(msg['From'], password)
+
+            server.sendmail(msg['From'], msg['To'],msg.as_string())
+            server.quit()
+            return HttpResponse('')
+        except:
+            return HttpResponse('Already Exists')

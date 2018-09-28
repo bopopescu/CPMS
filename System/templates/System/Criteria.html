@@ -36,7 +36,7 @@
         <div>
             <div class="container">
                 <nav class="navbar navbar-light navbar-expand-md fixed-top" id="mnav">
-                    <div class="container-fluid"><a class="navbar-brand" href="#" style="color:rgba(255,255,255,0.9);">Brand</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                    <div class="container-fluid"><a class="navbar-brand" href="{% url 'system:Home' %}" style="color:rgba(255,255,255,0.9);">MCA Department Placement System</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                         <div
                             class="collapse navbar-collapse float-right justify-content-end" id="navcol-1" style="color:rgb(255,255,255);">
                             <ul class="nav navbar-nav">
@@ -193,7 +193,7 @@
 {%  else  %}
     <body onload="clickerror()">
      <button id = "error" onclick="f()" hidden> </button>
-    <form action="{% url 'system:Index' %}" onload="f()" method="post">
+    <form action="{% url 'system:Home' %}" onload="f()" method="post">
     {% csrf_token %}
     <input type="submit" id="save" hidden>
     </form>
@@ -205,7 +205,7 @@
         }
 
         function f() {
-            alert("Session Timeout ! Please Login to use system !");
+            alert("No rights !");
         }
     </script>
 </body>

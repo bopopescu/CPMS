@@ -24,6 +24,8 @@ urlpatterns = [
     path('profileoptions/', loadprofileoptions, name="loadprofileoptions"),
     path('updateprofile/', updateProfile.as_view(), name="updateprofile"),
     path('updatepersonal/', updatePersonal.as_view(), name="updatePersonal"),
+    path('placement/', loadplacement, name="loadplacement"),
+    path('account/', account.as_view(), name="account"),
 
 
 

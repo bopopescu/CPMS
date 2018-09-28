@@ -31,7 +31,7 @@
         <div>
             <div class="container">
                 <nav class="navbar navbar-light navbar-expand-md fixed-top" id="mnav">
-                    <div class="container-fluid"><a class="navbar-brand" href="#" style="color:rgba(255,255,255,0.9);">Brand</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                   <div class="container-fluid"><a class="navbar-brand" href="{% url 'system:Home' %}" style="color:rgba(255,255,255,0.9);">MCA Department Placement System</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                         <div
                             class="collapse navbar-collapse float-right justify-content-end" id="navcol-1" style="color:rgb(255,255,255);">
                             <ul class="nav navbar-nav">
@@ -54,21 +54,21 @@
     </div>
 
 
-    	<div class="container" >
+    	<div class="container" data-aos="fade" data-aos-duration="700" >
 
             <div class="row" style="padding-top: 20%" >
                <div class="col-sm-2" ></div>
 
                	<div class="col-sm-4" id="col1" name = "col1"  style="height: 300px;">
 
-                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:generateProfile' %}">
+                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:loadpersonal' %}">
 
                          </a>
                     <p style="color: white;" class="text-center"> <b> Update Personal details </b> </p>
                	</div>
 
                		<div class="col-sm-4 offset-sm-1" id="col2" name="col2" style="height: 300px;">
-                        <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:loadpersonal' %}">
+                        <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:generateProfile' %}">
 
                          </a>
 
