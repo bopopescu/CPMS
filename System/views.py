@@ -44,6 +44,9 @@ def loadstudenthome(request):
 def loadadminhome(request):
     return render(request,"System/AdminHome.html")
 
+def loadplacementoptions(request):
+    return render(request,"System/PlacementOptions.html")
+
 class reg(APIView):
     def post(self,request):
         email = request.POST['email']
@@ -430,12 +433,12 @@ class updateProfile(APIView):
         ssc = request.POST['ssc']
         hsc = request.POST['hsc']
         ug = request.POST['ug']
-        pg1 = request.POST['pg1']
-        pg2 = request.POST['pg2']
-        pg3 = request.POST['pg3']
-        pg4 = request.POST['pg4']
-        pg5 = request.POST['pg5']
-        profile.objects.all().filter(email_id=email).update(year=year,shift=shift,ssc=ssc,hsc=hsc,ug=ug,pg1=pg1,pg2=pg2,pg3=pg3,pg4=pg4,pg5=pg5)
+        mca_sem1 = request.POST['mca_sem1']
+        mca_sem2 = request.POST['mca_sem2']
+        mca_sem3 = request.POST['mca_sem3']
+        mca_sem4 = request.POST['mca_sem4']
+        mca_sem5 = request.POST['mca_sem5']
+        profile.objects.all().filter(email_id=email).update(year=year,shift=shift,ssc=ssc,hsc=hsc,ug=ug,mca_sem1=mca_sem1,mca_sem2=mca_sem2,mca_sem3=mca_sem3,mca_sem4=mca_sem4,mca_sem5=mca_sem5)
         return HttpResponseRedirect("/system/home/")
 
 

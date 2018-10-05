@@ -29,7 +29,8 @@ urlpatterns = [
     path('loadmail/', loadmail, name="loadmail"),
     path('sendmail/', mainmail.as_view(), name="mainmail"),
     path('adminhome/', loadadminhome, name="loadadminhome"),
-    #path('loadmailscreen/', loadmailscreen, name="loadmailscreen"),
+    path('pplacementoptions/', loadplacementoptions, name="placementoptions"),
+
 
 
 
