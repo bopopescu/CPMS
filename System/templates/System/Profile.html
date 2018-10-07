@@ -53,10 +53,85 @@
         </div>
     </div>
     </div>
-    <div id="block" class="login-clean" style="padding-top: 120px;height:600px;margin-top: 40px">
-        <div class="container">
+
+     <div class="container" style="margin-top: 30px;" >
+
+        <div class="card" style="background: transparent;">
+            <div class="card-header text-center" style=" margin-top: 100px;    color: white; background-color: #37474f"><strong>Educational Details</strong></div>
+            <div class="card-body" style="background-color: rgba(55,71,79,0.84); opacity: 0.8%">
+
+
+                <form action="{% url 'system:profile' %}" method="post">
+                    {% csrf_token %}
+
+                      <div class="form-group"><input class="form-control" type="hidden" id="email" name="email"  autocomplete = "off" value="{{request.user.email}}"></div>
+                        <center><div class="illustration"><i class="typcn typcn-user"  data-aos="fade" data-aos-duration="900" style="color:#e91e63;font-size: 100px ;    padding-top: 40px"></i></div></center>
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+                            <label style="color: white">Year :  </label>
+                            <div class="form-group"> <select class="form-control" name = "year" id = "year"> <option value="FY"> FY </option> <option value="SY"> SY </option> <option value="TY"> TY </option>  </select></div>
+                            <label style="color: white">Shift : </label>
+                            <div class="form-group"> <select class="form-control" name = "shift" id = "shift"> <option value="Shift I"> Shift I </option> <option value="Shift II"> Shift II </option></select></div>
+                            <label style="color: white">SSC percentage : </label>
+                            <div class="form-group"><input class="form-control" type="text" id="ssc" onkeyup="validatePercentage(this.id)" name="ssc" required="" placeholder="SSC Marks" autocomplete = "off"></div>
+                            <label style="color: white">HSC percentage : </label>
+                            <div class="form-group"><input class="form-control" type="text" id="hsc" onkeyup="validatePercentage(this.id)" name="hsc" required="" placeholder="HSC Marks" autocomplete = "off"></div>
+                            <label style="color: white">Stream of Graduation : </label>
+                            <div class="form-group"> <select class="form-control" name = "ug_stream" id = "ug_stream"> <option value="BSC CS"> BSC CS </option> <option value="BSC IT"> BSC IT </option> <option value="BCA"> BCA </option>  <option value="BCOM"> BCOM </option><option value="Other"> OTHER </option>   </select></div>
+                            <label style="color: white">Graduation Aggregate: </label>
+                            <div class="form-group"><input class="form-control" type="text" id="ug" name="ug" onkeyup="validatePercentage(this.id)" required="" placeholder="UG Marks Agg." autocomplete = "off"></div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                              <div class="form-group" style="margin-top: 25px">
+
+                                        <h3 style="color: white">MCA Semester Data</h3>
+
+                              </div>
+
+                            <label style="color: white; margin-top: 12px;">Semester 1 Percentage : </label>
+                                <div class="form-group"><input class="form-control" type="text" id="mca_sem1" name="mca_sem1" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 1 Marks" autocomplete = "off"></div>
+                           <label style="color: white">Semester 2 Percentage : </label>
+                             <div class="form-group"><input class="form-control" type="text" id="mca_sem2" name="mca_sem2" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 2 Marks" autocomplete = "off"></div>
+                            <label style="color: white">Semester 3 Percentage : </label>
+                            <div class="form-group"><input class="form-control" type="text" id="mca_sem3" name="mca_sem3" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 3 Marks" autocomplete = "off"></div>
+                            <label style="color: white">Semester 4 Percentage : </label>
+                             <div class="form-group"><input class="form-control" type="text" id="mca_sem4" name="mca_sem4" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 4 Marks" autocomplete = "off"></div>
+                            <label style="color: white">Semester 5 Percentage : </label>
+                            <div class="form-group"><input class="form-control" type="text" id="mca_sem5" name="mca_sem5" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 5 Marks" autocomplete = "off"></div>
+
+
+                        </div>
+
+
+                    <br>
+                    </div>
+
+                <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4"><div class="form-group"><button class="btn btn-primary btn-block" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Save Details</button></div></div>
+                            <div class="col-md-4"></div>
+
+                </div>
+
+
+                </form>
+
+
+
+<!--
+
+
             <form data-aos="fade" method="post" action="{%  url 'system:profile' %}" data-aos-duration="700" id="mainform" style="max-width:400px;margin-top:-88px;height:950px;">
                 {% csrf_token %}
+                <h1 style="color: white; text-align: center">Educational Details</h1>
+
+
+
                 <div class="form-group"><input class="form-control" type="hidden" id="email" name="email" placeholder="PG Marks Agg." autocomplete = "off" value="{{request.user.email}}"></div>
                 <div class="illustration"><i class="typcn typcn-user" data-aos="fade" data-aos-duration="900" style="color:#e91e63;padding-top: 40px"></i></div>
                 <br>
@@ -74,8 +149,14 @@
                 <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Save Profile</button></div>
 
             </form>
+
+       -->
         </div>
     </div>
+     </div>
+
+
+
     <script src=" {% static "System/js/jquery.min.js" %}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script src=" {% static "System/js/bs-animation.js" %} "></script>
