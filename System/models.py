@@ -39,3 +39,34 @@ class personal(models.Model):
         db_table = 'personal'
 
 
+
+class placement(models.Model):
+    email = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, unique=True)
+    placement=models.CharField(max_length=40)
+    ppackage=models.CharField(max_length=40)
+    dojp=models.DateField()
+    hrname=models.CharField(max_length=40)
+    hrcontact=models.CharField(max_length=40)
+    hremail=models.CharField(max_length=40)
+    status=models.CharField(max_length=40)
+
+    class Meta:
+        db_table = 'placement'
+
+
+
+
+class internship(models.Model):
+    email = models.ForeignKey(User, to_field="username", on_delete=models.CASCADE, unique=True)
+    internship=models.CharField(max_length=40)
+    ipackage=models.CharField(max_length=40)
+    projectname=models.CharField(max_length=40)
+    seminar=models.CharField(max_length=40)
+    doji=models.DateField()
+    hrname=models.CharField(max_length=40)
+    hrcontact=models.CharField(max_length=40)
+    hremail=models.CharField(max_length=40)
+    status=models.CharField(max_length=40)
+
+    class Meta:
+        db_table = 'internship'

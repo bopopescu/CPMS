@@ -12,3 +12,8 @@ class personalSer(serializers.ModelSerializer):
         class Meta:
             model = personal
             fields = '__all__'
+
+class internshipSer(serializers.ModelSerializer):
+        class Meta:
+            model = internship
+            fields = '__all__'

@@ -30,6 +30,8 @@ urlpatterns = [
     path('sendmail/', mainmail.as_view(), name="mainmail"),
     path('adminhome/', loadadminhome, name="loadadminhome"),
     path('pplacementoptions/', loadplacementoptions, name="placementoptions"),
+    path('internshipoptions/', loadinternshipoptions, name="internshipoptions"),
+    path('saveinternship/', saveInternship.as_view(), name="saveinternship"),
 
 
 

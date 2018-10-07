@@ -49,7 +49,7 @@
     </div>
 
 
-	<form  method="post"  style="margin-top: -5%" action="{%  url 'system:customemail' %}" enctype="multipart/form-data">
+	<form  method="post" onsubmit="alert('Email Sent successfully !')"  style="margin-top: -5%" action="{%  url 'system:customemail' %}" enctype="multipart/form-data">
         {% csrf_token %}
 			<div class="container" id = "mcontainer"  style="margin-top: 228px;">
 				<div class="row">

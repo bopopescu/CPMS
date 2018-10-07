@@ -47,6 +47,14 @@ def loadadminhome(request):
 def loadplacementoptions(request):
     return render(request,"System/PlacementOptions.html")
 
+def loadinternshipoptions(request):
+    email = request.user.email
+    try:
+        internship.objects.get(email_id=email)
+        return render(request,"System/StudentHome.html")
+    except:
+        return render(request,"System/InternshipDetails.html")
+
 class reg(APIView):
     def post(self,request):
         email = request.POST['email']
@@ -156,11 +164,11 @@ class criteria(APIView):
         response['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
 
         writer = csv.writer(response)
-        writer.writerow(['First name', 'Middle name', 'Last name', 'Ssc', 'Hsc', 'Ug', 'Pg1','Pg2','Pg3','Pg4','Pg5', 'Year', 'Shift', 'Email address'])
+        writer.writerow(['First name', 'Middle name', 'Last name', 'Ssc', 'Hsc', 'Ug', 'MCA Sem 1','MCA Sem 2','MCA Sem 3','MCA Sem 4','MCA Sem 5', 'Year', 'Shift', 'Email address'])
         mycursor = mydb.cursor()
 
 
-        query = "select r.first_name ,r.middle_name, r.last_name, p.ssc, p.hsc, p.ug, p.pg1,p.pg2,p.pg3,p.pg4,p.pg5, p.year, p.shift, p.email_id from personal r inner join profile p on r.email_id= p.email_id where "
+        query = "select r.first_name ,r.middle_name, r.last_name, p.ssc, p.hsc, p.ug, p.mca_sem1,p.mca_sem2,p.mca_sem3,p.mca_sem4,p.mca_sem5, p.year, p.shift, p.email_id from personal r inner join profile p on r.email_id= p.email_id where "
 
         if count == 0:
             query += 'p.year ="' + Year + '"'
@@ -409,7 +417,7 @@ class customEmail(APIView):
         text = msg.as_string()
         server.sendmail(fromaddr, recp.split(','), text)
         server.quit()
-
+        return render(request,"System/AdminHome.html")
 
 def genProfile(request):
     email = request.user.email
@@ -482,10 +490,9 @@ class account(APIView):
 
             server.sendmail(msg['From'], msg['To'],msg.as_string())
             server.quit()
-            return HttpResponse('')
+            return render(request,"System/Index.html")
         except:
-            return HttpResponse('Already Exists')
-
+            return HttpResponse("")
 
 class mainmail(APIView):
     def post(self,request):
@@ -575,3 +582,22 @@ class mainmail(APIView):
 
             request.session['query'] = query2
             return render(request, "System/Custom_email.html")
+
+class saveInternship(APIView):
+    def post(self,request):
+
+        email = request.user.email
+        doji = request.POST['doji']
+        hremail = request.POST['hremail']
+        hrname = request.POST['hrname']
+        hrcontact = request.POST['hrcontact']
+        intern = request.POST['internship']
+        ipackage = request.POST['ipackage']
+        projectname = request.POST['projectname']
+        seminar = request.POST['seminar']
+        status = request.POST['status']
+        try:
+            internship.objects.create(email_id=email,hremail=hremail,doji=doji,hrname=hrname,hrcontact=hrcontact,internship=intern,ipackage=ipackage,projectname=projectname,seminar=seminar,status=status)
+            return render(request,"System/StudentHome.html")
+        except:
+            return HttpResponse("Error")

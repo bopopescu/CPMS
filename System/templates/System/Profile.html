@@ -71,8 +71,6 @@
                 <div class="form-group"><input class="form-control" type="text" id="mca_sem3" name="mca_sem3" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 3 Marks" autocomplete = "off"></div>
                 <div class="form-group"><input class="form-control" type="text" id="mca_sem4" name="mca_sem4" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 4 Marks" autocomplete = "off"></div>
                 <div class="form-group"><input class="form-control" type="text" id="mca_sem5" name="mca_sem5" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 5 Marks" autocomplete = "off"></div>
-
-
                 <div class="form-group"><button class="btn btn-primary btn-block" type="submit" id = "save" style="background-color:rgb(233,30,99); ">Save Profile</button></div>
 
             </form>
@@ -84,6 +82,57 @@
     <script src=" {% static "System/js/popper.min.js" %} "></script>
     <script src=" {% static "System/js/validation.js" %} "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
+    <script>
+    function calagg() {
+
+            mca1 = document.getElementById("mca_sem1").value;
+            mca2 = document.getElementById("mca_sem2").value;
+            mca3 = document.getElementById("mca_sem3").value;
+            mca4 = document.getElementById("mca_sem4").value;
+            mca5 = document.getElementById("mca_sem5").value;
+
+
+
+            if (mca1 == "")
+            {
+
+                document.getElementById("mcaagg").value = ""
+            }
+
+            if (mca2 == "")
+            {
+                document.getElementById("mcaagg").value = "";
+                total = parseInt(mca1);
+
+                document.getElementById("mcaagg").value = total;
+            }
+            if (mca3 === '' && mca4 === '' && mca5 ==='')
+            {
+
+                document.getElementById("mcaagg").value = "";
+                var total = parseFloat(mca1)+parseFloat(mca2);
+                var agg = parseFloat((total / 2 ) * 100);
+                alert(agg);
+                document.getElementById("mcaagg").value = agg;
+            }
+            if(mca4 == "")
+            {
+                document.getElementById("mcaagg").value = "";
+                total = parseInt(mca1)+parseInt(mca2)+parseInt(mca3);
+                agg = (total / 3 ) * 100;
+                document.getElementById("mcaagg").value = total;
+            }
+            if(mca5 == "")
+            {
+                document.getElementById("mcaagg").value = "";
+                total = parseInt(mca1)+parseInt(mca2)+parseInt(mca3)+parseInt(mca4);
+                agg = (total / 4 ) * 100;
+                document.getElementById("mcaagg").value = total;
+            }
+
+
+    }
+    </script>
 {%  else  %}
 
     <body onload="clickerror()">
@@ -97,11 +146,13 @@
         function clickerror() {
             document.getElementById('error').click();
             document.getElementById('save').click();
-        }
+        };
 
         function f() {
             alert("You don't have right to access this page !");
-        }
+        };
+
+
     </script>
 </body>
     </body>
