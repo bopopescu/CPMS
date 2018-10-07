@@ -601,3 +601,18 @@ class saveInternship(APIView):
             return render(request,"System/StudentHome.html")
         except:
             return HttpResponse("Error")
+
+
+class savePlacement(APIView):
+    def post(self,request):
+        email = request.user.email
+        place = request.POST['placement']
+        ppackage = request.POST['ppackage']
+        dojp = request.POST['dojp']
+        hrname = request.POST['hrname']
+        hrcontact = request.POST['hrcontact']
+        hremail = request.POST['hremail']
+        status = request.POST['status']
+
+        placement.objects.create(email_id=email,placement=place,ppackage=ppackage,
+                                 dojp=dojp,hrname=hrname,hrcontact=hrcontact,hremail=hremail,status=status)
