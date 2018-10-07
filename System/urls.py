@@ -32,6 +32,7 @@ urlpatterns = [
     path('pplacementoptions/', loadplacementoptions, name="placementoptions"),
     path('internshipoptions/', loadinternshipoptions, name="internshipoptions"),
     path('saveinternship/', saveInternship.as_view(), name="saveinternship"),
+    path('saveplacement/', savePlacement.as_view(), name="saveplacement"),
 
 
 
