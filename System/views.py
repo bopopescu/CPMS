@@ -400,7 +400,7 @@ class forgotPassword(APIView):
 
 
 def randompassword():
-    chars=string.ascii_uppercase + string.ascii_lowercase + string.digits
+    chars=string.ascii_uppercase + string.digits
     size= 8
     return ''.join(random.choice(chars) for x in range(size, 16))
 
