@@ -44,8 +44,28 @@ def loadstudenthome(request):
 def loadadminhome(request):
     return render(request,"System/AdminHome.html")
 
+
+def loadupdateinternship(request):
+    return render(request,"System/UpdateInternship.html")
+
+def loadupdateplacement(request):
+    return render(request,"System/UpdatePlacement.html")
+
+def loadpisheet(request):
+    return render(request,"System/PISheetOptions.html")
+
 def loadplacementoptions(request):
-    return render(request,"System/PlacementOptions.html")
+    email = request.user.email
+    try:
+        internship.objects.get(email_id=email)
+        try:
+            placement.objects.get(email_id=email)
+            return render(request,"System/PlacementOptionsAfterBoth.html")
+
+        except:
+            return render(request,"System/PlacementOptionsAfterInter.html")
+    except:
+        return render(request,"System/PlacementOptions.html")
 
 def loadinternshipoptions(request):
     email = request.user.email
@@ -316,13 +336,33 @@ class profiles(APIView):
 
     def post(self,request):
 
-
-        ser = profileSer(data=request.data)
-        if ser.is_valid():
-            ser.save()
-            return HttpResponseRedirect("/system/home/")
-        else:
-            return HttpResponse("Error")
+        email = request.user.email
+        year = request.POST['year']
+        shift = request.POST['shift']
+        ssc = request.POST['ssc']
+        hsc = request.POST['hsc']
+        ug = request.POST['ug']
+        mca_sem1 = request.POST['mca_sem1']
+        mca_sem2 = request.POST['mca_sem2']
+        mca_sem3 = request.POST['mca_sem3']
+        mca_sem4 = request.POST['mca_sem4']
+        mca_sem5 = request.POST['mca_sem5']
+        ug_stream = request.POST['ug_stream']
+        obj = profile()
+        obj.email_id = email
+        obj.ug_stream = ug_stream
+        obj.year = year
+        obj.shift = shift
+        obj.ssc = ssc
+        obj.hsc = hsc
+        obj.ug = ug
+        obj.mca_sem1 = mca_sem1
+        obj.mca_sem2 = mca_sem2
+        obj.mca_sem3 = mca_sem3
+        obj.mca_sem4 = mca_sem4
+        obj.mca_sem5 = mca_sem5
+        obj.save()
+        return HttpResponseRedirect("/system/home/")
 
 
 class forgotPassword(APIView):
@@ -616,3 +656,105 @@ class savePlacement(APIView):
 
         placement.objects.create(email_id=email,placement=place,ppackage=ppackage,
                                  dojp=dojp,hrname=hrname,hrcontact=hrcontact,hremail=hremail,status=status)
+
+        return render(request,"System/StudentHome.html")
+
+
+def jsoninternship(request):
+    email = request.user.email
+    obj = internship.objects.get(email_id=email)
+    context = internshipSer(obj)
+    return JsonResponse(context.data, safe=False)
+
+
+def jsonplacement(request):
+    email = request.user.email
+    obj = placement.objects.get(email_id=email)
+    context = placementSer(obj)
+    return JsonResponse(context.data, safe=False)
+
+
+def updateIntership(request):
+    email = request.user.email
+    doji = request.POST['doji']
+    hremail = request.POST['hremail']
+    hrname = request.POST['hrname']
+    hrcontact = request.POST['hrcontact']
+    intern = request.POST['internship']
+    ipackage = request.POST['ipackage']
+    projectname = request.POST['projectname']
+    seminar = request.POST['seminar']
+    status = request.POST['status']
+
+    internship.objects.filter(email_id=email).update(internship=intern,doji=doji,hremail=hremail,hrname = hrname,
+                                                     hrcontact=hrcontact,ipackage=ipackage,projectname=projectname,
+                                                     seminar=seminar,status=status)
+    return HttpResponse("Updated!")
+
+def updatePlacement(request):
+    email = request.user.email
+
+    dojp = request.POST['dojp']
+    hremail = request.POST['hremail']
+    hrname = request.POST['hrname']
+    hrcontact = request.POST['hrcontact']
+    place = request.POST['placement']
+    ppackage = request.POST['ppackage']
+    status = request.POST['status']
+
+    placement.objects.filter(email_id=email).update(placement=place,dojp=dojp,hremail=hremail,hrname=hrname,
+                                                    hrcontact=hrcontact,ppackage=ppackage,status=status)
+    return render(request,"System/StudentHome.html")
+
+
+def genInternshipList(request):
+    filename = request.POST['filename']
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="root",
+        database="cpms"
+    )
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(
+        ['First name', 'Middle name', 'Last name', 'Email', 'Internship Company','Stipend','Project Name','Seminar Topic','Date Of Joining','Hr Name','Hr Contact','Hr Email','Status'])
+    mycursor = mydb.cursor()
+
+    query = "select p.first_name, p.middle_name, p.last_name, p.email_id, i.internship, i.ipackage, i.projectname, i.seminar, i.doji, i.hrname, i.hrcontact, i.hremail, i.status from personal p INNER  JOIN internship i on p.email_id = i.email_id where i.status = 'On Campus' UNION ALL select p.first_name, p.middle_name, p.last_name, p.email_id, i.internship, i.ipackage, i.projectname, i.seminar, i.doji, i.hrname, i.hrcontact, i.hremail, i.status from personal p INNER  JOIN internship i on p.email_id = i.email_id where i.status = 'Off Campus'"
+    mycursor.execute(query)
+    myresult = mycursor.fetchall()
+
+    for i in myresult:
+        writer.writerow(i)
+
+    return response
+
+def getPlacementList(request):
+    filename = request.POST['filename']
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="root",
+        database="cpms"
+    )
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(
+        ['First name', 'Middle name', 'Last name', 'Email', 'Placement Company', 'Salary', 'Date Of Joining', 'Hr Name', 'Hr Contact', 'Hr Email', 'Status'])
+    mycursor = mydb.cursor()
+
+    query = "select p.first_name, p.middle_name, p.last_name, p.email_id, i.placement, i.ppackage, i.dojp, i.hrname, i.hrcontact, i.hremail, i.status from personal p INNER  JOIN placement i on p.email_id = i.email_id where i.status = 'On Campus' UNION ALL select p.first_name, p.middle_name, p.last_name, p.email_id,  i.placement, i.ppackage, i.dojp, i.hrname, i.hrcontact, i.hremail, i.status  from personal p INNER  JOIN placement i on p.email_id = i.email_id where i.status = 'Off Campus'"
+    mycursor.execute(query)
+    myresult = mycursor.fetchall()
+
+    for i in myresult:
+        writer.writerow(i)
+
+    return response

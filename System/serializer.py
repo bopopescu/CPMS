@@ -17,3 +17,8 @@ class internshipSer(serializers.ModelSerializer):
         class Meta:
             model = internship
             fields = '__all__'
+
+class placementSer(serializers.ModelSerializer):
+        class Meta:
+            model = placement
+            fields = '__all__'

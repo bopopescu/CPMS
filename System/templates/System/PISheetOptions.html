@@ -32,7 +32,7 @@
         <div>
             <div class="container">
                 <nav class="navbar navbar-light navbar-expand-md fixed-top" id="mnav">
-                    <div class="container-fluid"><a class="navbar-brand" href="{% url 'system:Home' %}" style="color:rgba(255,255,255,0.9);">MCA Department Placement System</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                    <div class="container-fluid"><a class="navbar-brand" href="{% url 'system:loadadminhome' %}" style="color:rgba(255,255,255,0.9);">MCA Department Placement System</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                         <div
                             class="collapse navbar-collapse float-right justify-content-end" id="navcol-1" style="color:rgb(255,255,255);">
                             <ul class="nav navbar-nav">
@@ -57,38 +57,54 @@
 
     	<div class="container" data-aos="fade" data-aos-duration="700">
 
-            <div class="row" style="padding-top: 20%" >
+           <div class="row" style="padding-top: 20%" >
+               <div class="col-sm-2" ></div>
 
+               	<div class="col-sm-4" id="col1" onclick="acceptfnm()" name = "col1"  style="height: 300px;">
 
-               	<div class="col-sm-3 offset-1" id="col1" name = "col1"  style="height: 300px;">
-
-                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:criteria' %}">
-
-                         </a>
-                    <img src="{% static "System/images/sheet1.png" %}" style="height: 140px;margin-top: -80%">
-                    <p style="color: white;" class="text-center"> <b> Criteria Wise Sheet </b> </p>
-               	</div>
-
-               		<div class="col-sm-3 offset-1" id="col2" name="col2" style="height: 300px;">
-                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:loadmail' %}">
-
-                    </a>
-                        <img src="{% static "System/images/emailicon.png" %}" style="height: 140px;margin-top: -80%">
-                    <p style="color: white;" class="text-center"> <b> Email Students </b> </p>
-               	</div>
-
-
-                <div class="col-sm-3 offset-1" id="col1" name = "col1"  style="height: 300px;">
-
-                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:pisheet' %}">
+                    <a class="btn" style="height: 250px;width:100%;" href="#">
 
                          </a>
-                    <img src="{% static "System/images/sheet1.png" %}" style="height: 140px;margin-top: -80%">
-                    <p style="color: white;" class="text-center"> <b> Placement & Internship Sheet </b> </p>
+                    <img src="{% static "System/images/internship.png" %}" style="height: 156px;margin-top: -60%">
+                    <p style="color: white;" class="text-center"> <b> Generate Internship Detail List </b> </p>
                	</div>
+
+               		<div class="col-sm-4 offset-1" id="col1" onclick="acceptfnm1()" name = "col1"  style="height: 300px;">
+
+                    <a class="btn" style="height: 250px;width:100%;" href="#">
+
+                         </a>
+                        <img src="{% static "System/images/placement.png" %}" style="height: 156px;margin-top: -60%">
+                    <p style="color: white;" class="text-center"> <b> Generate Placement Detail List </b> </p>
+               	</div>
+               	<div class="col-sm-2"></div>
+
 
             </div>
         </div>
+
+                <form action="{%  url 'system:internshiplist' %}" method ="post">
+                {% csrf_token %}
+                   <input type="hidden" name="filename" id="hide">
+                    <input type="submit" id = "Save" name ="Submit" style="visibility: hidden">
+               </form>
+                <form action="{%  url 'system:PlacementList' %}" method ="post">
+                {% csrf_token %}
+                   <input type="hidden" name="filename" id="hide">
+                    <input type="submit" id = "Save1" name ="Submit" style="visibility: hidden">
+               </form>
+    <script type="text/javascript">
+		function acceptfnm() {
+			var filenm = prompt('Enter File name : ');
+			document.getElementById('hide').value = filenm;
+            document.getElementById("Save").click();
+		};
+		function acceptfnm1() {
+			var filenm = prompt('Enter File name : ');
+			document.getElementById('hide').value = filenm;
+            document.getElementById("Save1").click();
+		}
+		</script>
 <script src=" {% static "System/js/jquery.min.js" %}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script src=" {% static "System/js/bs-animation.js" %} "></script>

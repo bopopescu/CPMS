@@ -33,6 +33,15 @@ urlpatterns = [
     path('internshipoptions/', loadinternshipoptions, name="internshipoptions"),
     path('saveinternship/', saveInternship.as_view(), name="saveinternship"),
     path('saveplacement/', savePlacement.as_view(), name="saveplacement"),
+    path('jsoninternship/', jsoninternship, name="jsoninternship"),
+    path('updateinternship/', loadupdateinternship, name="updateinternship"),
+    path('updateIntership/', updateIntership, name="updateIntership"),
+    path('jsonplacement/', jsonplacement, name="jsonplacement"),
+    path('loadupdateplacement/', loadupdateplacement, name="loadupdateplacement"),
+    path('updatePlacement/', updatePlacement, name="updatePlacement"),
+    path('pisheet/', loadpisheet, name="pisheet"),
+    path('intershiplist/', genInternshipList, name="internshiplist"),
+    path('placementlist/', getPlacementList, name="PlacementList"),
 
 
 

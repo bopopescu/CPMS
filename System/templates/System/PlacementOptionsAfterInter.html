@@ -26,7 +26,6 @@
 
 
 </head>
-{% if user.is_superuser %}
 <body>
 <div class="container">
         <div>
@@ -38,7 +37,7 @@
                             <ul class="nav navbar-nav">
                                 <li class="nav-item dropdown">
                                   <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" style="color:rgba(255,255,255,0.5);">
-                                    Welcome, {{request.user.email}}
+                                    Welcome, {{request.user.first_name}} {{request.user.last_name}}
                                   </a>
                                   <div class="dropdown-menu">
 
@@ -55,37 +54,30 @@
     </div>
 
 
-    	<div class="container" data-aos="fade" data-aos-duration="700">
+    	<div class="container" data-aos="fade" data-aos-duration="700" >
 
             <div class="row" style="padding-top: 20%" >
+               <div class="col-sm-2" ></div>
 
+               	<div class="col-sm-4" id="col1" name = "col1"  style="height: 300px;">
 
-               	<div class="col-sm-3 offset-1" id="col1" name = "col1"  style="height: 300px;">
-
-                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:criteria' %}">
-
-                         </a>
-                    <img src="{% static "System/images/sheet1.png" %}" style="height: 140px;margin-top: -80%">
-                    <p style="color: white;" class="text-center"> <b> Criteria Wise Sheet </b> </p>
-               	</div>
-
-               		<div class="col-sm-3 offset-1" id="col2" name="col2" style="height: 300px;">
-                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:loadmail' %}">
-
-                    </a>
-                        <img src="{% static "System/images/emailicon.png" %}" style="height: 140px;margin-top: -80%">
-                    <p style="color: white;" class="text-center"> <b> Email Students </b> </p>
-               	</div>
-
-
-                <div class="col-sm-3 offset-1" id="col1" name = "col1"  style="height: 300px;">
-
-                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:pisheet' %}">
+                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:updateinternship' %}">
 
                          </a>
-                    <img src="{% static "System/images/sheet1.png" %}" style="height: 140px;margin-top: -80%">
-                    <p style="color: white;" class="text-center"> <b> Placement & Internship Sheet </b> </p>
+                    <img src="{% static "System/images/internship.png" %}" style="height: 156px;margin-top: -60%">
+                    <p style="color: white;" class="text-center"> <b> Update Internship Status </b> </p>
                	</div>
+
+               		<div class="col-sm-4 offset-sm-1" id="col2" name="col2" style="height: 300px;">
+                        <a class="btn" style="height: 250px;width:100%;" href="{%  url 'system:loadplacement' %}">
+
+                         </a>
+
+                    <img src="{% static "System/images/placement.png" %}" style="height: 156px;margin-top: -60%">
+               		<p style="color: white;" class="text-center"><b> Placement Status </b></p>
+
+               	</div>
+               	<div class="col-sm-2"></div>
 
             </div>
         </div>
@@ -96,24 +88,6 @@
     <script src=" {% static "System/js/validation.js" %} "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
 
-{%  else  %}
-    <body onload="clickerror()">
-     <button id = "error" onclick="f()" hidden> </button>
-    <form action="{% url 'system:Home' %}" onload="f()" method="post">
-    {% csrf_token %}
-    <input type="submit" id="save" hidden>
-    </form>
 
-    <script>
-        function clickerror() {
-            $('#error').click();
-            $('#save').click();
-        }
-
-        function f() {
-            alert("No rights !");
-        }
-    </script>
 </body>
-{% endif %}
 </html>
