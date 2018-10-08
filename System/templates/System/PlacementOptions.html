@@ -37,7 +37,7 @@
                             <ul class="nav navbar-nav">
                                 <li class="nav-item dropdown">
                                   <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" style="color:rgba(255,255,255,0.5);">
-                                    Welcome, {{request.user.first_name}} {{request.user.last_name}}
+                                    Welcome, {{request.user.email}}
                                   </a>
                                   <div class="dropdown-menu">
 
@@ -59,14 +59,15 @@
             <div class="row" style="padding-top: 20%" >
                <div class="col-sm-2" ></div>
 
-               	<div class="col-sm-4" id="col1" name = "col1"  style="height: 300px;">
-                    <img src="{% static "System/images/internship.png" %}" style="height: 156px;margin-top: -60%">
-                    <a class="btn" style="height: 250px;width:100%;" href="{% url 'system:internshipoptions' %}">
+               		<div class="col-sm-4" id="col2" name="col2" style="height: 300px;">
+                        <a class="btn" style="height: 250px;width:100%;" href="{%  url 'system:internshipoptions' %}">
 
                          </a>
-                    <p style="color: white;" class="text-center"> <b> Internship Status </b> </p>
-               	</div>
 
+                    <img src="{% static "System/images/internship.png" %}" style="height: 156px;margin-top: -60%">
+               		<p style="color: white;" class="text-center"><b> Placement Status </b></p>
+
+               	</div>
                		<div class="col-sm-4 offset-sm-1" id="col2" name="col2" style="height: 300px;">
                         <a class="btn" style="height: 250px;width:100%;" href="{%  url 'system:loadplacement' %}">
 

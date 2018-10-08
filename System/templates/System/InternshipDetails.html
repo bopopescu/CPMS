@@ -39,7 +39,7 @@
                             <ul class="nav navbar-nav">
                                 <li class="nav-item dropdown">
                                   <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" style="color:rgba(255,255,255,0.5);">
-                                    Welcome, {{request.user.first_name}} {{request.user.last_name}}
+                                    Welcome,{{request.user.email}}
                                   </a>
                                   <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{% url 'system:generateProfile' %}">Profile</a>
