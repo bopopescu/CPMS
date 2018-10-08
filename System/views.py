@@ -54,12 +54,14 @@ def loadupdateplacement(request):
 def loadpisheet(request):
     return render(request,"System/PISheetOptions.html")
 
+
 def loadplacementoptions(request):
     email = request.user.email
     try:
         internship.objects.get(email_id=email)
         try:
             placement.objects.get(email_id=email)
+
             return render(request,"System/PlacementOptionsAfterBoth.html")
 
         except:
@@ -689,7 +691,7 @@ def updateIntership(request):
     internship.objects.filter(email_id=email).update(internship=intern,doji=doji,hremail=hremail,hrname = hrname,
                                                      hrcontact=hrcontact,ipackage=ipackage,projectname=projectname,
                                                      seminar=seminar,status=status)
-    return HttpResponse("Updated!")
+    return render(request,"System/StudentHome.html")
 
 def updatePlacement(request):
     email = request.user.email

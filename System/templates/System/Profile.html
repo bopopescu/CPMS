@@ -38,7 +38,7 @@
                             <ul class="nav navbar-nav">
                                 <li class="nav-item dropdown">
                                   <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" style="color:rgba(255,255,255,0.5);">
-                                    Welcome, {{request.user.first_name}} {{request.user.last_name}}
+                                    Welcome, {{request.user.email}}
                                   </a>
                                   <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{% url 'system:generateProfile' %}">Profile</a>
@@ -75,13 +75,13 @@
                             <label style="color: white">Shift : </label>
                             <div class="form-group"> <select class="form-control" name = "shift" id = "shift"> <option value="Shift I"> Shift I </option> <option value="Shift II"> Shift II </option></select></div>
                             <label style="color: white">SSC percentage : </label>
-                            <div class="form-group"><input class="form-control" type="text" id="ssc" onkeyup="validatePercentage(this.id)" name="ssc" required="" placeholder="SSC Marks" autocomplete = "off"></div>
+                            <div class="form-group"><input class="form-control" type="text" id="ssc" maxlength="5" onkeyup="validatePercentage(this.id)" name="ssc" required="" placeholder="SSC Marks" autocomplete = "off"></div>
                             <label style="color: white">HSC percentage : </label>
-                            <div class="form-group"><input class="form-control" type="text" id="hsc" onkeyup="validatePercentage(this.id)" name="hsc" required="" placeholder="HSC Marks" autocomplete = "off"></div>
+                            <div class="form-group"><input class="form-control" type="text" id="hsc" maxlength="5" onkeyup="validatePercentage(this.id)" name="hsc" required="" placeholder="HSC Marks" autocomplete = "off"></div>
                             <label style="color: white">Stream of Graduation : </label>
                             <div class="form-group"> <select class="form-control" name = "ug_stream" id = "ug_stream"> <option value="BSC CS"> BSC CS </option> <option value="BSC IT"> BSC IT </option> <option value="BCA"> BCA </option>  <option value="BCOM"> BCOM </option><option value="Other"> OTHER </option>   </select></div>
                             <label style="color: white">Graduation Aggregate: </label>
-                            <div class="form-group"><input class="form-control" type="text" id="ug" name="ug" onkeyup="validatePercentage(this.id)" required="" placeholder="UG Marks Agg." autocomplete = "off"></div>
+                            <div class="form-group"><input class="form-control" type="text" id="ug" maxlength="5" name="ug" onkeyup="validatePercentage(this.id)" required="" placeholder="UG Marks Agg." autocomplete = "off"></div>
 
                         </div>
 
@@ -94,15 +94,15 @@
                               </div>
 
                             <label style="color: white; margin-top: 12px;">Semester 1 Percentage : </label>
-                                <div class="form-group"><input class="form-control" type="text" id="mca_sem1" name="mca_sem1" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 1 Marks" autocomplete = "off"></div>
+                                <div class="form-group"><input class="form-control" maxlength="5" type="text" id="mca_sem1" required="" name="mca_sem1" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 1 Marks" autocomplete = "off"></div>
                            <label style="color: white">Semester 2 Percentage : </label>
-                             <div class="form-group"><input class="form-control" type="text" id="mca_sem2" name="mca_sem2" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 2 Marks" autocomplete = "off"></div>
+                             <div class="form-group"><input class="form-control" maxlength="5" type="text" id="mca_sem2" required="" name="mca_sem2" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 2 Marks" autocomplete = "off"></div>
                             <label style="color: white">Semester 3 Percentage : </label>
-                            <div class="form-group"><input class="form-control" type="text" id="mca_sem3" name="mca_sem3" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 3 Marks" autocomplete = "off"></div>
+                            <div class="form-group"><input class="form-control" maxlength="5" type="text" id="mca_sem3" required="" name="mca_sem3" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 3 Marks" autocomplete = "off"></div>
                             <label style="color: white">Semester 4 Percentage : </label>
-                             <div class="form-group"><input class="form-control" type="text" id="mca_sem4" name="mca_sem4" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 4 Marks" autocomplete = "off"></div>
+                             <div class="form-group"><input class="form-control" maxlength="5" required="" type="text" id="mca_sem4" name="mca_sem4" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 4 Marks" autocomplete = "off"></div>
                             <label style="color: white">Semester 5 Percentage : </label>
-                            <div class="form-group"><input class="form-control" type="text" id="mca_sem5" name="mca_sem5" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 5 Marks" autocomplete = "off"></div>
+                            <div class="form-group"><input class="form-control" maxlength="5" required="" type="text" id="mca_sem5" name="mca_sem5" onkeyup="validatePercentage(this.id)" placeholder="PG Sem 5 Marks" autocomplete = "off"></div>
 
 
                         </div>

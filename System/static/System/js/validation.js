@@ -45,3 +45,14 @@ function validatePass()
     }
 
  }
+
+
+  function validateBigFields(name)
+    {
+
+        var x= document.getElementById(name).value;
+        if(!/^[a-zA-Z' ']*$/g.test(x))
+        {
+            document.getElementById(name).value="";
+        }
+    }
